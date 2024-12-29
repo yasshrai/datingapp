@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default function LoginPage() {
+export default function SignUpPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-gray-900 dark:via-purple-900 dark:to-violet-900">
       <Card className="w-full max-w-md">
@@ -17,10 +17,14 @@ export default function LoginPage() {
             Love Connect
           </CardTitle>
           <CardDescription className="text-center">
-            Enter your email and password to login
+            Create an account to find your perfect match
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input id="name" type="text" placeholder="John Doe" required />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" placeholder="m@example.com" required />
@@ -29,14 +33,18 @@ export default function LoginPage() {
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" required />
           </div>
-          <Button className="w-full bg-pink-500 hover:bg-pink-600">Sign In</Button>
+          <div className="space-y-2">
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input id="confirm-password" type="password" required />
+          </div>
+          <Button className="w-full bg-pink-500 hover:bg-pink-600">Sign Up</Button>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
+                Or sign up with
               </span>
             </div>
           </div>
@@ -57,14 +65,11 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-between gap-2">
           <div className="text-sm text-muted-foreground">
-            <span className="mr-1 hidden sm:inline-block">Don&apos;t have an account?</span>
-            <Link href="/signup" className="underline hover:text-primary">
-              Sign up
+            <span className="mr-1 hidden sm:inline-block">Already have an account?</span>
+            <Link href="/login" className="underline hover:text-primary">
+              Log in
             </Link>
           </div>
-          <Link href="/forgot-password" className="text-sm text-muted-foreground underline hover:text-primary">
-            Forgot password?
-          </Link>
         </CardFooter>
       </Card>
     </div>
