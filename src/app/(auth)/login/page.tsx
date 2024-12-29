@@ -14,7 +14,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
             <Heart className="inline-block mr-2 text-pink-500" size={28} />
-            Love Connect
+            Campus Connection
           </CardTitle>
           <CardDescription className="text-center">
             Enter your email and password to login

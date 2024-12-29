@@ -14,7 +14,7 @@ export default function SignUpPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
             <Heart className="inline-block mr-2 text-pink-500" size={28} />
-            Love Connect
+            Campus Connection
           </CardTitle>
           <CardDescription className="text-center">
             Create an account to find your perfect match
