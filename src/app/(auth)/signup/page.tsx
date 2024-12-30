@@ -1,13 +1,16 @@
 "use client";
 
 import Link from 'next/link'
-import { Heart } from 'lucide-react'
+import { Heart,Eye,EyeOff } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from 'react';
 
 export default function SignUpPage() {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       <Card className="w-full max-w-md">
@@ -31,7 +34,19 @@ export default function SignUpPage() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
+            <div className=' relative'>
+            <Input id="password"  required type={showPassword ? "text" : "password"} />
+            <div
+                className="absolute inset-y-0 right-0 top-0 flex items-center pr-3 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <Eye className="text-black dark:text-white text-sm" />
+                ) : (
+                  <EyeOff className="text-black dark:text-white text-sm" />
+                )}
+              </div>
+            </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirm-password">Confirm Password</Label>
