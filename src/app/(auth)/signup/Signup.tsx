@@ -1,18 +1,46 @@
 "use client";
 
-import React from 'react'
-import Link from 'next/link'
-import { Heart, Eye, EyeOff } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useState } from 'react';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Heart, Eye, EyeOff } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Signup = () => {
+  // State variables to store user input
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
+  const [userDetails, setUserDetails] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // Handle changes in input fields
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserDetails((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    console.log(userDetails); // Log the user input to the console
+    setUserDetails({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    })
+  };
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
@@ -24,48 +52,90 @@ const Signup = () => {
           Create an account to find your perfect match
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Full Name</Label>
-          <Input id="name" type="text" placeholder="John Doe" required />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <div className='relative'>
-            <Input id="password" required type={showPassword ? "text" : "password"} />
-            <div
-              className="absolute inset-y-0 right-0 top-0 flex items-center pr-3 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <Eye className="text-black dark:text-white text-sm" />
-              ) : (
-                <EyeOff className="text-black dark:text-white text-sm" />
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirm-password">Confirm Password</Label>
-          <div className='relative'>
-            <Input id="confirm-password" type={showConfirmPassword ? "text" : "password"} required />
-            <div
-              className='absolute inset-y-0 right-0 top-0 flex items-center pr-3 cursor-pointer'
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-              {showConfirmPassword ? (
-                <Eye className="text-black dark:text-white text-sm" />
-              ) : (
-                <EyeOff className="text-black dark:text-white text-sm" />
-              )}
 
+      {/* Form Content */}
+      <CardContent className="space-y-4">
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="John Doe"
+              value={userDetails.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="m@example.com"
+              value={userDetails.email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={userDetails.password}
+                onChange={handleInputChange}
+                required
+              />
+              <div
+                className="absolute inset-y-0 right-0 top-0 flex items-center pr-3 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <Eye className="text-black dark:text-white text-sm" />
+                ) : (
+                  <EyeOff className="text-black dark:text-white text-sm" />
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <Button className="w-full bg-pink-500 hover:bg-pink-600">Sign Up</Button>
+
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={userDetails.confirmPassword}
+                onChange={handleInputChange}
+                required
+              />
+              <div
+                className="absolute inset-y-0 right-0 top-0 flex items-center pr-3 cursor-pointer"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <Eye className="text-black dark:text-white text-sm" />
+                ) : (
+                  <EyeOff className="text-black dark:text-white text-sm" />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full bg-pink-500 hover:bg-pink-600">
+            Sign Up
+          </Button>
+        </form>
+
+        {/* Divider for social sign up */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -76,6 +146,8 @@ const Signup = () => {
             </span>
           </div>
         </div>
+
+        {/* Google Sign Up Button */}
         <div className="grid grid-cols-1 gap-4">
           <Button variant="outline">
             <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -85,16 +157,18 @@ const Signup = () => {
           </Button>
         </div>
       </CardContent>
+
+      {/* Footer with navigation links */}
       <CardFooter className="flex flex-wrap items-center justify-between gap-2">
         <div className="text-sm text-muted-foreground">
-          <span className="mr-1 hidden sm:inline-block">Already have an account?</span>
+          <span className="mr-1 inline-block">Already have an account?</span>
           <Link href="/login" className="underline hover:text-primary">
             Log in
           </Link>
         </div>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
 export default Signup;

@@ -1,16 +1,39 @@
 "use client"
 
-import React from 'react'
-import Link from 'next/link'
-import { Heart, Eye, EyeOff } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useState } from 'react'
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Heart, Eye, EyeOff } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+interface UserDetail {
+    email: string;
+    password: string;
+}
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [userDetail, setUserDetail] = useState<UserDetail>({ email: "", password: "" });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUserDetail((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(userDetail);
+        setUserDetail({
+            email: "",
+            password: ""
+        })
+    };
+
     return (
         <Card className="w-full max-w-md">
             <CardHeader className="space-y-1">
@@ -23,27 +46,46 @@ const Login = () => {
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="m@example.com" required />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className='relative'>
-                        <Input id="password" type={showPassword ? "text" : "password"} required />
-                        <div
-                            className="absolute inset-y-0 right-0 top-0 flex items-center pr-3 cursor-pointer"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? (
-                                <Eye className="text-black dark:text-white text-sm" />
-                            ) : (
-                                <EyeOff className="text-black dark:text-white text-sm" />
-                            )}
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="m@example.com"
+                            value={userDetail.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <div className='relative'>
+                            <Input
+                                id="password"
+                                name="password"
+                                type={showPassword ? "text" : "password"}
+                                value={userDetail.password}
+                                onChange={handleChange}
+                                required
+                            />
+                            <div
+                                className="absolute inset-y-0 right-0 top-0 flex items-center pr-3 cursor-pointer"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? (
+                                    <Eye className="text-black dark:text-white text-sm" />
+                                ) : (
+                                    <EyeOff className="text-black dark:text-white text-sm" />
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <Button className="w-full bg-pink-500 hover:bg-pink-600">Sign In</Button>
+                    <Button className="w-full bg-pink-500 hover:bg-pink-600" type="submit">
+                        Sign In
+                    </Button>
+                </form>
                 <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                         <span className="w-full border-t" />
@@ -65,7 +107,7 @@ const Login = () => {
             </CardContent>
             <CardFooter className="flex flex-wrap items-center justify-between gap-2">
                 <div className="text-sm text-muted-foreground">
-                    <span className="mr-1 hidden sm:inline-block">Don&apos;t have an account?</span>
+                    <span className="mr-1 inline-block">Don&apos;t have an account?</span>
                     <Link href="/signup" className="underline hover:text-primary">
                         Sign up
                     </Link>
@@ -75,7 +117,7 @@ const Login = () => {
                 </Link>
             </CardFooter>
         </Card>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;
