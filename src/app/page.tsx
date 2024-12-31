@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-r dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
+    <div className="min-h-screen flex flex-col bg-gradient-to-r dark:bg-zinc-950">
       <header className="p-4 flex justify-between items-center">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
