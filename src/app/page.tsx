@@ -27,7 +27,7 @@ export default function HomePage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="space-x-4"
           >
-            <Button asChild variant="outline" className="text-white hover:text-pink-300">
+            <Button asChild  className="text-white hover:text-pink-300">
               <Link href="/login">Login</Link>
             </Button>
           </motion.div>
@@ -69,7 +69,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.5 }}
           >
-            <Button asChild size="lg" className="bg-pink-500 hover:bg-pink-600 text-white">
+            <Button asChild size="lg" className="hover:bg-pink-600 text-white">
               <Link href="/signup">Get Started</Link>
             </Button>
           </motion.div>
