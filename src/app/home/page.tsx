@@ -16,23 +16,26 @@ interface Partner {
   name: string
   age: number
   course: string
-  degree: string
+  college:string
   year: number
-  bio: string
+  bio:string
+  description: string
   diet: string
   interests: string[]
   photos: string[]
+
 }
 
 const partners: Partner[] = [
   {
     id: 1,
     name: 'Alice Johnson',
+    bio:"moody",
     age: 22,
     course: 'Computer Science',
-    degree: 'Bachelor',
+    college: 'renaissnace university',
     year: 3,
-    bio: 'Passionate about coding and AI. Love to explore new technologies and push the boundaries of what\'s possible with software.',
+    description: 'Passionate about coding and AI. Love to explore new technologies and push the boundaries of what\'s possible with software.',
     diet: 'Vegetarian',
     interests: ['Technology', 'Music', 'Hiking', 'Photography'],
     photos: ['https://images.pexels.com/photos/1105058/pexels-photo-1105058.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/792326/pexels-photo-792326.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1564868/pexels-photo-1564868.jpeg?auto=compress&cs=tinysrgb&w=600']
@@ -41,10 +44,11 @@ const partners: Partner[] = [
     id: 2,
     name: 'Bob Smith',
     age: 23,
+    bio:"foody",
     course: 'Business Administration',
-    degree: 'Master',
+    college: 'renaissnace university',
     year: 1,
-    bio: 'Aspiring entrepreneur with a love for startups and innovation. Always looking for new business ideas and networking opportunities.',
+    description: 'Aspiring entrepreneur with a love for startups and innovation. Always looking for new business ideas and networking opportunities.',
     diet: 'Non-vegetarian',
     interests: ['Entrepreneurship', 'Sports', 'Travel', 'Reading'],
     photos: ['https://images.pexels.com/photos/220474/pexels-photo-220474.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600']
@@ -72,7 +76,7 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
           />
           <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
             <h3 className="text-2xl font-semibold text-white">{partner.name}, {partner.age}</h3>
-            <p className="text-sm text-white/80">{partner.course} - {partner.degree}, Year {partner.year}</p>
+            <p className="text-sm text-white/80">{partner.course} - {partner.college}, Year {partner.year}</p>
           </div>
         </CardContent>
       </Card>
@@ -92,7 +96,7 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{partner.name}, {partner.age}</DialogTitle>
-            <DialogDescription>{partner.course} - {partner.degree}, Year {partner.year}</DialogDescription>
+            <DialogDescription>{partner.course} - {partner.college}, Year {partner.year}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-3 gap-2">
@@ -107,8 +111,8 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
               ))}
             </div>
             <div>
-              <h4 className="font-semibold mb-2">Bio</h4>
-              <p>{partner.bio}</p>
+              <h4 className="font-semibold mb-2">description</h4>
+              <p>{partner.description}</p>
             </div>
             <div>
               <h4 className="font-semibold mb-2">Interests</h4>
