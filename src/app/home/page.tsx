@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { Heart, MessageCircle, User, Settings, Menu, ThumbsUp, ThumbsDown, Info, X } from 'lucide-react'
+import { Heart, MessageCircle, User, Settings, Menu, ThumbsUp, ThumbsDown, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -16,21 +16,20 @@ interface Partner {
   name: string
   age: number
   course: string
-  college:string
+  college: string
   year: number
-  bio:string
+  bio: string
   description: string
   diet: string
   interests: string[]
   photos: string[]
-
 }
 
 const partners: Partner[] = [
   {
     id: 1,
     name: 'Alice Johnson',
-    bio:"moody",
+    bio: "moody",
     age: 22,
     course: 'Computer Science',
     college: 'renaissnace university',
@@ -44,7 +43,7 @@ const partners: Partner[] = [
     id: 2,
     name: 'Bob Smith',
     age: 23,
-    bio:"foody",
+    bio: "foody",
     course: 'Business Administration',
     college: 'renaissnace university',
     year: 1,
@@ -52,6 +51,19 @@ const partners: Partner[] = [
     diet: 'Non-vegetarian',
     interests: ['Entrepreneurship', 'Sports', 'Travel', 'Reading'],
     photos: ['https://images.pexels.com/photos/220474/pexels-photo-220474.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600']
+  },
+  {
+    id: 3,
+    name: 'pat Smith',
+    age: 23,
+    bio: "foody",
+    course: 'Business Administration',
+    college: 'renaissnace university',
+    year: 1,
+    description: 'Aspiring entrepreneur with a love for startups and innovation. Always looking for new business ideas and networking opportunities.',
+    diet: 'Non-vegetarian',
+    interests: ['Entrepreneurship', 'Sports', 'Travel', 'Reading'],
+    photos: ['https://media.istockphoto.com/id/624129686/photo/portrait-boy.jpg?s=612x612&w=0&k=20&c=bzU5INObuqZyjRv-WlzJNG-GY96D1i5NsrbZg1cm-34=', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600']
   },
 ]
 
@@ -68,7 +80,7 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
   return (
     <>
       <Card className="overflow-hidden">
-        <CardContent className="p-0 relative aspect-[3/4]" {...handlers}>
+        <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
           <img
             src={partner.photos[0]}
             alt={`${partner.name}'s main photo`}
@@ -81,14 +93,11 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
         </CardContent>
       </Card>
       <div className="flex justify-between mt-4">
-        <Button onClick={onPrev} className="bg-red-500 hover:bg-red-600">
-          <ThumbsDown className="mr-2" /> Pass
+        <Button onClick={onPrev} className="bg-red-500 hover:bg-red-600 rounded-full p-3">
+          <ThumbsDown className="h-6 w-6" />
         </Button>
-        <Button onClick={() => setShowDetails(true)} className="bg-blue-500 hover:bg-blue-600">
-          <Info className="mr-2" /> Details
-        </Button>
-        <Button onClick={onNext} className="bg-green-500 hover:bg-green-600">
-          <ThumbsUp className="mr-2" /> Like
+        <Button onClick={onNext} className="bg-green-500 hover:bg-green-600 rounded-full p-3">
+          <ThumbsUp className="h-6 w-6" />
         </Button>
       </div>
 
@@ -111,7 +120,7 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
               ))}
             </div>
             <div>
-              <h4 className="font-semibold mb-2">description</h4>
+              <h4 className="font-semibold mb-2">Description</h4>
               <p>{partner.description}</p>
             </div>
             <div>
