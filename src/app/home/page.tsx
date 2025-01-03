@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { Heart, MessageCircle, User, Settings, Menu, ThumbsUp, ThumbsDown, X } from 'lucide-react'
+import { Heart, MessageCircle, User, Settings, Menu, ThumbsUp, ThumbsDown, X, Sparkles } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -24,6 +24,7 @@ interface Partner {
   interests: string[]
   photos: string[]
 }
+
 
 const partners: Partner[] = [
   {
@@ -67,7 +68,7 @@ const partners: Partner[] = [
   },
 ]
 
-function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: () => void, onPrev: () => void }) {
+function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
@@ -77,27 +78,64 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
     trackMouse: true
   })
 
+  const variants = {
+    enter: (direction: 'left' | 'right') => {
+      return {
+        x: direction === 'right' ? -300 : 300,
+        opacity: 0
+      }
+    },
+    center: {
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: 'left' | 'right') => {
+      return {
+        x: direction === 'right' ? 300 : -300,
+        opacity: 0
+      }
+    }
+  }
+
   return (
     <>
-      <Card className="overflow-hidden">
-        <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
-          <img
-            src={partner.photos[0]}
-            alt={`${partner.name}'s main photo`}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
-            <h3 className="text-2xl font-semibold text-white">{partner.name}, {partner.age}</h3>
-            <p className="text-sm text-white/80">{partner.course} - {partner.college}, Year {partner.year}</p>
-          </div>
-        </CardContent>
-      </Card>
+      <motion.div
+        key={partner.id}
+        custom={direction}
+        variants={variants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{ type: 'tween', duration: 0.3 }}
+      >
+        <Card className="overflow-hidden">
+          <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
+            <img
+              src={partner.photos[0]}
+              alt={`${partner.name}'s main photo`}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/70 to-transparent">
+              <h3 className="text-2xl font-semibold text-white">{partner.name}, {partner.age}</h3>
+              <p className="text-sm text-white/80">{partner.course} - {partner.college}, Year {partner.year}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
       <div className="flex justify-between mt-4">
-        <Button onClick={onPrev} className="bg-red-500 hover:bg-red-600 rounded-full p-3">
+        <Button onClick={onPrev} className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
           <ThumbsDown className="h-6 w-6" />
         </Button>
-        <Button onClick={onNext} className="bg-green-500 hover:bg-green-600 rounded-full p-3">
+        <Button onClick={onNext} className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
           <ThumbsUp className="h-6 w-6" />
+        </Button>
+      </div>
+      <div className="flex justify-center mt-4 space-x-4">
+        <Button className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
+          <MessageCircle className="h-6 w-6" />
+        </Button>
+        <Button className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
+          <Sparkles className="h-6 w-6" />
         </Button>
       </div>
 
@@ -167,12 +205,15 @@ function PartnerCard({ partner, onNext, onPrev }: { partner: Partner, onNext: ()
 
 export default function HomePage() {
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0)
+  const [direction, setDirection] = useState<'left' | 'right' | null>(null)
 
   const nextPartner = () => {
+    setDirection('left')
     setCurrentPartnerIndex((prevIndex) => (prevIndex + 1) % partners.length)
   }
 
   const prevPartner = () => {
+    setDirection('right')
     setCurrentPartnerIndex((prevIndex) => (prevIndex - 1 + partners.length) % partners.length)
   }
 
@@ -218,20 +259,14 @@ export default function HomePage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-md mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
+          <AnimatePresence mode="wait" custom={direction}>
+            <PartnerCard
               key={partners[currentPartnerIndex].id}
-              initial={{ opacity: 0, x: 300 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -300 }}
-              transition={{ duration: 0.3 }}
-            >
-              <PartnerCard 
-                partner={partners[currentPartnerIndex]} 
-                onNext={nextPartner}
-                onPrev={prevPartner}
-              />
-            </motion.div>
+              partner={partners[currentPartnerIndex]}
+              onNext={nextPartner}
+              onPrev={prevPartner}
+              direction={direction}
+            />
           </AnimatePresence>
         </div>
       </main>
