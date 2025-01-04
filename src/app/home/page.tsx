@@ -123,19 +123,19 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
           </CardContent>
         </Card>
       </motion.div>
-      <div className="flex justify-between mt-4">
-        <Button onClick={onPrev} className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
+      <div className="flex justify-evenly mt-4">
+        <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5">
           <ThumbsDown className="h-6 w-6" />
         </Button>
-        <Button onClick={onNext} className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
+        <Button onClick={onNext} variant={"outline"} className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5">
           <ThumbsUp className="h-6 w-6" />
         </Button>
       </div>
       <div className="flex justify-center mt-4 space-x-4">
-        <Button className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
+        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
           <MessageCircle className="h-6 w-6" />
         </Button>
-        <Button className="bg-gray-700 hover:bg-gray-600 rounded-full p-3">
+        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
           <Sparkles className="h-6 w-6" />
         </Button>
       </div>
