@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { Heart, MessageCircle, User, Menu, ThumbsUp, PersonStandingIcon, X, Sparkles, LogOut, HeartIcon, Search, Ghost } from 'lucide-react'
+import { Heart, MessageCircle, User, Menu, ThumbsUp, PersonStandingIcon, X, Sparkles, LogOut, HeartIcon, Search } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -107,7 +107,7 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
           </Button>
         </div>
         <div className=' w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg' >
-          <Button variant={"ghost"}>
+          <Button variant="ghost">
             <HeartIcon className='text-black' fill='black'></HeartIcon><p className=' text-sm font-bold'>REQUEST</p>
           </Button>
         </div>
