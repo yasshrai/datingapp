@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { Heart, MessageCircle, User, Menu, ThumbsUp, ThumbsDown, X, Sparkles, LogOut } from 'lucide-react'
+import { Heart, MessageCircle, User, Menu, ThumbsUp, PersonStandingIcon, X, Sparkles, LogOut } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -123,21 +123,31 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
           </CardContent>
         </Card>
       </motion.div>
-      <div className="flex justify-evenly mt-4">
-        <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5">
-          <ThumbsDown className="h-6 w-6" />
+      <div className="mt-4 flex justify-center">
+        <div className=' flex justify-center bg-gray-700 rounded-full gap-1 w-30 h-15' >
+        <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900  size-12 rounded-full ">
+          <X className="" />
         </Button>
-        <Button onClick={onNext} variant={"outline"} className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5">
-          <ThumbsUp className="h-6 w-6" />
+        <Button onClick={onNext} variant={"outline"} className="bg-red-700 hover:bg-gray-900  size-12 rounded-full">
+          <ThumbsUp className="" />
         </Button>
+        </div>
       </div>
       <div className="flex justify-center mt-4 space-x-4">
         <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
           <MessageCircle className="h-6 w-6" />
+          <p>message</p>
         </Button>
         <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
           <Sparkles className="h-6 w-6" />
+          <p>confession</p>
         </Button>
+        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
+          <PersonStandingIcon className="h-6 w-6" />
+          <p>people</p>
+        </Button>
+        
+        
       </div>
 
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
