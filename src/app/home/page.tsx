@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { Heart, MessageCircle, User, Menu, ThumbsUp, PersonStandingIcon, X, Sparkles, LogOut } from 'lucide-react'
+import { Heart, MessageCircle, User, Menu, ThumbsUp, PersonStandingIcon, X, Sparkles, LogOut, HeartIcon, Search, Ghost } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -100,6 +100,18 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
 
   return (
     <>
+      <div className=' flex justify-evenly mb-5'>
+        <div className=' w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg' >
+          <Button className='bg-transparent'>
+            <Search className='text-white' fill='black'></Search><p className=' text-sm font-bold'>SEARCH</p>
+          </Button>
+        </div>
+        <div className=' w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg' >
+          <Button variant={"ghost"}>
+            <HeartIcon className='text-black' fill='black'></HeartIcon><p className=' text-sm font-bold'>REQUEST</p>
+          </Button>
+        </div>
+      </div>
       <motion.div
         key={partner.id}
         custom={direction}
@@ -109,6 +121,8 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
         exit="exit"
         transition={{ type: 'tween', duration: 0.3 }}
       >
+
+
         <Card className="overflow-hidden">
           <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
             <img
@@ -122,15 +136,16 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
             </div>
           </CardContent>
         </Card>
+
       </motion.div>
       <div className="mt-4 flex justify-center">
         <div className=' flex justify-center bg-gray-700 rounded-full gap-1 w-30 h-15' >
-        <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900  size-12 rounded-full ">
-          <X className="" />
-        </Button>
-        <Button onClick={onNext} variant={"outline"} className="bg-red-700 hover:bg-gray-900  size-12 rounded-full">
-          <ThumbsUp className="" />
-        </Button>
+          <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900  size-12 rounded-full ">
+            <X className="" />
+          </Button>
+          <Button onClick={onNext} variant={"outline"} className="bg-red-700 hover:bg-gray-900  size-12 rounded-full">
+            <ThumbsUp className="" />
+          </Button>
         </div>
       </div>
       <div className="flex justify-center mt-4 space-x-4">
@@ -146,8 +161,8 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
           <PersonStandingIcon className="h-6 w-6" />
           <p>people</p>
         </Button>
-        
-        
+
+
       </div>
 
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
@@ -229,11 +244,11 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r bg-zinc-950">
+    <div className="min-h-screen bg-gradient-to-r bg-zinc-900">
       <header className="p-4 flex justify-between items-center">
         <Link href="/home" className="text-2xl font-bold text-white flex items-center">
           <Heart className="mr-2 text-pink-500" />
-          Love Connect
+          Campus Connection
         </Link>
         <nav className="hidden md:flex space-x-4">
           <Button variant="ghost" className="text-white">
@@ -242,7 +257,7 @@ export default function HomePage() {
           <Button variant="ghost" className="text-white">
             <User className="mr-2" /> Likes
           </Button>
-          <Button onClick={() => signOut({redirectTo:"/signup"})}>
+          <Button onClick={() => signOut({ redirectTo: "/signup" })}>
             <LogOut className='mr-2' /> Logout
           </Button>
         </nav>
@@ -260,7 +275,7 @@ export default function HomePage() {
               <Button variant="ghost">
                 <User className="mr-2" /> Likes
               </Button>
-              <Button onClick={() => signOut({redirectTo:"/signup"})}>
+              <Button onClick={() => signOut({ redirectTo: "/signup" })}>
                 <LogOut className='mr-2' /> Logout
               </Button>
 
