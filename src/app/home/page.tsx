@@ -4,12 +4,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { Heart, MessageCircle, User, Settings, Menu, ThumbsUp, ThumbsDown, X, Sparkles } from 'lucide-react'
+import { Heart, MessageCircle, User, Menu, ThumbsUp, ThumbsDown, X, Sparkles, LogOut } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { signOut } from "next-auth/react"
+import { redirect } from 'next/dist/server/api-utils'
 
 interface Partner {
   id: number
@@ -231,8 +233,8 @@ export default function HomePage() {
           <Button variant="ghost" className="text-white">
             <User className="mr-2" /> Likes
           </Button>
-          <Button variant="ghost" className="text-white">
-            <Settings className="mr-2" /> Settings
+          <Button onClick={() => signOut({redirectTo:"/signup"})}>
+            <LogOut className='mr-2' /> Logout
           </Button>
         </nav>
         <Sheet>
@@ -249,9 +251,10 @@ export default function HomePage() {
               <Button variant="ghost">
                 <User className="mr-2" /> Likes
               </Button>
-              <Button variant="ghost">
-                <Settings className="mr-2" /> Settings
+              <Button onClick={() => signOut({redirectTo:"/signup"})}>
+                <LogOut className='mr-2' /> Logout
               </Button>
+
             </nav>
           </SheetContent>
         </Sheet>
