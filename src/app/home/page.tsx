@@ -112,7 +112,7 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
       >
         <Card className="overflow-hidden">
           <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
-            <img
+            <Image
               src={partner.photos[0]}
               alt={`${partner.name}'s main photo`}
               className="absolute inset-0 w-full h-full object-cover"
