@@ -100,7 +100,7 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
 
   return (
     <>
-      <div className=' flex justify-evenly mb-5'>
+      <div className=' flex justify-evenly mb-3'>
         <div className=' w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg' >
           <Button className='bg-transparent'>
             <Search className='text-white' fill='black'></Search><p className=' text-sm font-bold'>SEARCH</p>
@@ -138,13 +138,13 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
         </Card>
 
       </motion.div>
-      <div className="mt-4 flex justify-center">
-        <div className=' flex justify-center bg-gray-700 rounded-full gap-1 w-30 h-15' >
+      <div className=" flex justify-center mt-[10px]">
+        <div className=' flex justify-center bg-gray-700 rounded-full w-30 h-15' >
           <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900  size-12 rounded-full ">
             <X className="" />
           </Button>
           <Button onClick={onNext} variant={"outline"} className="bg-red-700 hover:bg-gray-900  size-12 rounded-full">
-            <ThumbsUp className="" />
+            <ThumbsUp  />
           </Button>
         </div>
       </div>
