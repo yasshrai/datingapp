@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "next-auth/react"
-import Image from 'next/image'
 
 interface Partner {
   id: number
@@ -112,7 +111,7 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
       >
         <Card className="overflow-hidden">
           <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
-            <Image
+            <img
               src={partner.photos[0]}
               alt={`${partner.name}'s main photo`}
               className="absolute inset-0 w-full h-full object-cover"
@@ -150,7 +149,7 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-3 gap-2">
               {partner.photos.map((photo, index) => (
-                <Image
+                <img
                   key={index}
                   src={photo}
                   alt={`${partner.name}'s photo ${index + 1}`}
@@ -185,7 +184,7 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="sm:max-w-[90vw] sm:max-h-[90vh] p-0">
           <div className="relative w-full h-full">
-            <Image
+            <img
               src={selectedImage || ''}
               alt="Full size"
               className="w-full h-full object-contain"
