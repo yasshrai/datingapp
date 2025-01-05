@@ -83,7 +83,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r bg-zinc-900">
+    <div className="min-h-screen bg-gradient-to-r bg-neutral-900">
       <header className="p-4 flex justify-between items-center">
         <Link href="/home" className="text-2xl font-bold text-white flex items-center">
           <Heart className="mr-2 text-pink-500" />
