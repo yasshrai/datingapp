@@ -148,14 +148,13 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
           </Button>
         </div>
       </div>
-      <div className="flex justify-center mt-4 space-x-4">
-        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
-          <MessageCircle className="h-6 w-6" />
-          <p>message</p>
-        </Button>
+      <div className="flex justify-self-center mt-3">
         <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
           <Sparkles className="h-6 w-6" />
           <p>confession</p>
+        </Button>
+        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
+          <MessageCircle className="h-6 w-6" />
         </Button>
         <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-5" variant={"outline"}>
           <PersonStandingIcon className="h-6 w-6" />
