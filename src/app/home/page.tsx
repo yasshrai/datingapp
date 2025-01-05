@@ -4,13 +4,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { Heart, MessageCircle, User, Menu, ThumbsUp, PersonStandingIcon, X, LogOut, HeartIcon, Search } from 'lucide-react'
+import { Heart, MessageCircle, User, Menu, ThumbsUp, PersonStandingIcon, X, LogOut, Activity, HeartIcon, Search } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "next-auth/react"
+
 
 interface Partner {
   id: number
@@ -157,7 +158,7 @@ function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner,
           <MessageCircle className="h-6 w-6" />
         </Button>
         <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-6 w-32" variant={"outline"}>
-          <Heart className="h-6 w-6" />
+          <Activity className="h-6 w-6" />
           <p>confession</p>
         </Button>
 
