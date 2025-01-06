@@ -49,6 +49,18 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
       }
     }
   }
+  const currentDetails = (() => {
+    switch (currentPhotoIndex) {
+      case 0:
+        return { title: `${partner.name}, ${partner.age}`, subtitle: `${partner.course} - ${partner.college}, Year ${partner.year}` };
+      case 1:
+        return { title: "Description", subtitle: partner.description };
+      case 2:
+        return { title: "Interests", subtitle: partner.interests.join(", ") };
+      default:
+        return { title: "", subtitle: "" };
+    }
+  })();
 
   return (
     <>
@@ -111,11 +123,13 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
+
             <div className="absolute bottom-0 left-0 right-0 p-4 pb-16 bg-gradient-to-t from-black/70 to-transparent">
-              <h3 className="text-2xl font-semibold text-white pb-4">{partner.name}, {partner.age}</h3>
-              <p className="text-sm text-white/80">{partner.course} - {partner.college}, Year {partner.year}</p>
+              <h3 className="text-2xl font-semibold text-white pb-4">{currentDetails.title}</h3>
+              <p className="text-sm text-white/80">{currentDetails.subtitle}</p>
             </div>
           </CardContent>
+          {/* Navigation buttons */}
           <div className="absolute -bottom-6 left-0 right-0 flex justify-center z-10">
             <div className='flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg'>
               <Button onClick={(e) => { e.stopPropagation(); onPrev(); }} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
@@ -141,13 +155,14 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           <p>confession</p>
         </Button>
       </div>
-
+      {/* Dialog for details */}
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{partner.name}, {partner.age}</DialogTitle>
             <DialogDescription>{partner.course} - {partner.college}, Year {partner.year}</DialogDescription>
           </DialogHeader>
+
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-3 gap-2">
               {partner.photos.map((photo, index) => (
@@ -183,6 +198,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         </DialogContent>
       </Dialog>
 
+      {/* Dialog for full-size image */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="sm:max-w-[90vw] sm:max-h-[90vh] p-0">
           <div className="relative w-full h-full">
