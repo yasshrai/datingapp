@@ -84,15 +84,15 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           </div>
         </Card>
       </motion.div>
-      <div className="flex justify-self-center mt-5">
-        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-6 w-32 " variant={"outline"}>
+      <div className="flex justify-self-center mt-6 gap-1">
+        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32 outline outline-1 " variant={"outline"}>
           <PersonStandingIcon className="h-6 w-6" />
           <p>people</p>
         </Button>
-        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-6" variant={"outline"}>
+        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 " variant={"outline"}>
           <MessageCircle className="h-6 w-6" />
         </Button>
-        <Button className="bg-zinc-950 hover:bg-gray-900 rounded-full p-6 w-32" variant={"outline"}>
+        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32  outline outline-1 " variant={"outline"}>
           <Activity className="h-6 w-6" />
           <p>confession</p>
         </Button>
