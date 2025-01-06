@@ -1,20 +1,33 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
 import { useState } from "react"
-import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, HeartIcon, Search } from 'lucide-react'
+import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, HeartIcon, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Partner } from "./HomePage"
 
 export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
 
   const handlers = useSwipeable({
-    onSwipedLeft: onNext,
-    onSwipedRight: onPrev,
+    onSwipedLeft: () => {
+      if (currentPhotoIndex < partner.photos.length - 1) {
+        setCurrentPhotoIndex(currentPhotoIndex + 1)
+      } else {
+        onNext()
+      }
+    },
+    onSwipedRight: () => {
+      if (currentPhotoIndex > 0) {
+        setCurrentPhotoIndex(currentPhotoIndex - 1)
+      } else {
+        onPrev()
+      }
+    },
     trackMouse: true
   })
 
@@ -39,15 +52,15 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
 
   return (
     <>
-      <div className=' flex justify-evenly mb-3'>
-        <div className=' w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg' >
+      <div className='flex justify-evenly mb-3'>
+        <div className='w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg'>
           <Button className='bg-transparent'>
-            <Search className='text-white' fill='black'></Search><p className=' text-sm font-bold'>SEARCH</p>
+            <Search className='text-white' fill='black' /><p className='text-sm font-bold'>SEARCH</p>
           </Button>
         </div>
-        <div className=' w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg' >
+        <div className='w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg'>
           <Button variant="ghost">
-            <HeartIcon className='text-black' fill='black'></HeartIcon><p className=' text-sm font-bold'>REQUEST</p>
+            <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold'>REQUEST</p>
           </Button>
         </div>
       </div>
@@ -60,14 +73,45 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         exit="exit"
         transition={{ type: 'tween', duration: 0.3 }}
       >
-        <Card className="overflow relative">
+        <Card className="relative">
           <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
-            <img
-              src={partner.photos[0]}
-              alt={`${partner.name}'s main photo`}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 p-4 pb-16">
+            <AnimatePresence initial={false} custom={direction}>
+              <motion.img
+                key={currentPhotoIndex}
+                src={partner.photos[currentPhotoIndex]}
+                alt={`${partner.name}'s photo ${currentPhotoIndex + 1}`}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </AnimatePresence>
+            <div className="absolute top-4 left-4 right-4 flex justify-between">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-black/50 text-white rounded-full"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setCurrentPhotoIndex((prev) => (prev > 0 ? prev - 1 : partner.photos.length - 1))
+                }}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-black/50 text-white rounded-full"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setCurrentPhotoIndex((prev) => (prev < partner.photos.length - 1 ? prev + 1 : 0))
+                }}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 pb-16 bg-gradient-to-t from-black/70 to-transparent">
               <h3 className="text-2xl font-semibold text-white pb-4">{partner.name}, {partner.age}</h3>
               <p className="text-sm text-white/80">{partner.course} - {partner.college}, Year {partner.year}</p>
             </div>
@@ -96,8 +140,6 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           <Activity className="h-6 w-6" />
           <p>confession</p>
         </Button>
-
-
       </div>
 
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
@@ -163,3 +205,4 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
     </>
   )
 }
+
