@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import {  AnimatePresence } from 'framer-motion'
-import { Heart, MessageCircle, User, Menu,LogOut } from 'lucide-react'
+import { AnimatePresence } from 'framer-motion'
+import { Heart, MessageCircle, User, Menu, LogOut, Search, HeartIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "next-auth/react"
 import PartnerCard from './Partnercard'
-import { Search,HeartIcon } from 'lucide-react'
+import { SearchDialog } from '@/components/SearchDialog'
 
 export interface Partner {
   id: number
@@ -23,7 +23,6 @@ export interface Partner {
   interests: string[]
   photos: string[]
 }
-
 
 const partners: Partner[] = [
   {
@@ -54,7 +53,7 @@ const partners: Partner[] = [
   },
   {
     id: 3,
-    name: 'pat Smith',
+    name: 'Pat Smith',
     age: 23,
     bio: "foody",
     course: 'Business Administration',
@@ -67,10 +66,10 @@ const partners: Partner[] = [
   },
 ]
 
-
 export default function HomePage() {
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
+  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false)
 
   const nextPartner = () => {
     setDirection('left')
@@ -80,6 +79,13 @@ export default function HomePage() {
   const prevPartner = () => {
     setDirection('right')
     setCurrentPartnerIndex((prevIndex) => (prevIndex - 1 + partners.length) % partners.length)
+  }
+
+  const handleSelectPartner = (partner: Partner) => {
+    const index = partners.findIndex(p => p.id === partner.id)
+    if (index !== -1) {
+      setCurrentPartnerIndex(index)
+    }
   }
 
   return (
@@ -117,7 +123,6 @@ export default function HomePage() {
               <Button onClick={() => signOut({ redirectTo: "/signup" })}>
                 <LogOut className='mr-2' /> Logout
               </Button>
-
             </nav>
           </SheetContent>
         </Sheet>
@@ -125,18 +130,18 @@ export default function HomePage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-md mx-auto">
-        <div className='flex justify-evenly mb-3'>
-        <div className='w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg'>
-          <Button className='bg-transparent'>
-            <Search className='text-white' fill='black' /><p className='text-sm font-bold'>SEARCH</p>
-          </Button>
-        </div>
-        <div className='w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg'>
-          <Button variant="ghost">
-            <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold'>REQUEST</p>
-          </Button>
-        </div>
-      </div>
+          <div className='flex justify-evenly mb-3'>
+            <div className='w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg'>
+              <Button className='bg-transparent' onClick={() => setIsSearchDialogOpen(true)}>
+                <Search className='text-white' fill='black' /><p className='text-sm font-bold'>SEARCH</p>
+              </Button>
+            </div>
+            <div className='w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg'>
+              <Button variant="ghost">
+                <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold'>REQUEST</p>
+              </Button>
+            </div>
+          </div>
           <AnimatePresence mode="wait" custom={direction}>
             <PartnerCard
               key={partners[currentPartnerIndex].id}
@@ -148,6 +153,13 @@ export default function HomePage() {
           </AnimatePresence>
         </div>
       </main>
+
+      <SearchDialog
+        isOpen={isSearchDialogOpen}
+        onClose={() => setIsSearchDialogOpen(false)}
+        partners={partners}
+        onSelectPartner={handleSelectPartner}
+      />
     </div>
   )
 }
