@@ -62,7 +62,7 @@ export default function ProfileCompletion() {
     } catch (error) {
       toast({
         title: "Error",
-        description: "There was a problem completing your profile. Please try again.",
+        description: "There was a problem completing your profile. Please try again."+ error,
         variant: "destructive",
       })
     }
@@ -142,7 +142,7 @@ export default function ProfileCompletion() {
                   <Textarea placeholder="A short bio about yourself" {...field} />
                 </FormControl>
                 <FormDescription>
-                  A brief introduction about yourself (max 500 characters).
+                  write your Bio (max 20 characters).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -158,7 +158,7 @@ export default function ProfileCompletion() {
                   <Textarea placeholder="Describe yourself in detail" {...field} />
                 </FormControl>
                 <FormDescription>
-                  A more detailed description about yourself, your interests, and what you're looking for (max 1000 characters).
+                  A more detailed description about yourself, your interests, and what you &apoos;re looking for (max 1000 characters).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -299,7 +299,7 @@ export default function ProfileCompletion() {
           <FormField
             control={form.control}
             name="photos"
-            render={({ field }) => (
+            render={({  }) => (
               <FormItem>
                 <FormLabel>Photos</FormLabel>
                 <FormControl>
