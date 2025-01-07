@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "next-auth/react"
 import PartnerCard from './Partnercard'
-
+import { Search,HeartIcon } from 'lucide-react'
 
 export interface Partner {
   id: number
@@ -125,6 +125,18 @@ export default function HomePage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-md mx-auto">
+        <div className='flex justify-evenly mb-3'>
+        <div className='w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg'>
+          <Button className='bg-transparent'>
+            <Search className='text-white' fill='black' /><p className='text-sm font-bold'>SEARCH</p>
+          </Button>
+        </div>
+        <div className='w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg'>
+          <Button variant="ghost">
+            <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold'>REQUEST</p>
+          </Button>
+        </div>
+      </div>
           <AnimatePresence mode="wait" custom={direction}>
             <PartnerCard
               key={partners[currentPartnerIndex].id}
