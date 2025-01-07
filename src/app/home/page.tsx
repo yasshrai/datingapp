@@ -4,6 +4,7 @@ import HomePage from "./HomePage"
 import ProfileCompletion from "./profile-completion"
 
 async function isProfileComplete(userId: string): Promise<boolean> {
+  console.log(userId)
   await new Promise(resolve => setTimeout(resolve, 100))
   return false
 }

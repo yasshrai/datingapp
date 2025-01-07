@@ -18,8 +18,8 @@ const profileSchema = z.object({
   age: z.number().min(18, { message: "You must be at least 18 years old." }).max(100, { message: "Age must be less than 100." }),
   course: z.string().min(2, { message: "Course is required." }),
   college: z.string().min(2, { message: "College is required." }),
-  bio: z.string().min(10, { message: "Bio must be at least 10 characters." }).max(500, { message: "Bio must be less than 500 characters." }),
-  description: z.string().min(20, { message: "Description must be at least 20 characters." }).max(1000, { message: "Description must be less than 1000 characters." }),
+  bio: z.string().min(4, { message: "Bio must be at least 10 characters." }).max(20, { message: "Bio must be less than 500 characters." }),
+  description: z.string().min(10, { message: "Description must be at least 20 characters." }).max(1000, { message: "Description must be less than 1000 characters." }),
   diet: z.enum(["vegetarian", "non-vegetarian"]),
   lookingFor: z.enum(["long-term", "short-term", "friendship"]),
   smoker: z.enum(["yes", "no"]),
@@ -52,18 +52,12 @@ export default function ProfileCompletion() {
 
   async function onSubmit(values: z.infer<typeof profileSchema>) {
     try {
-      // Here you would typically send this data to your backend
       console.log(values)
-      
-      // Simulate an API call
       await new Promise(resolve => setTimeout(resolve, 1000))
-
       toast({
         title: "Profile completed",
         description: "Your profile has been successfully created.",
       })
-
-      // Redirect to the home page
       router.push('/home')
     } catch (error) {
       toast({
