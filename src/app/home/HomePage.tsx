@@ -7,7 +7,7 @@ import { Heart, MessageCircle, User, Menu, LogOut, Search, HeartIcon } from 'luc
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "next-auth/react"
-import PartnerCard from './Partnercard'
+import PartnerCard from "./Partnercard"
 import { SearchDialog } from '@/components/SearchDialog'
 
 export interface Partner {
@@ -19,7 +19,11 @@ export interface Partner {
   year: number
   bio: string
   description: string
-  diet: string
+  diet: 'vegetarian' | 'non-vegetarian'
+  lookingFor: 'long-term' | 'short-term' | 'friendship'
+  smoker: 'yes' | 'no'
+  drinker: 'yes' | 'no'
+  communicationPreference: 'calling' | 'messaging'
   interests: string[]
   photos: string[]
 }
@@ -34,7 +38,11 @@ const partners: Partner[] = [
     college: 'renaissnace university',
     year: 3,
     description: 'Passionate about coding and AI. Love to explore new technologies and push the boundaries of what\'s possible with software.',
-    diet: 'Vegetarian',
+    diet: 'vegetarian',
+    lookingFor: 'long-term',
+    smoker: 'no',
+    drinker: 'no',
+    communicationPreference: 'messaging',
     interests: ['Technology', 'Music', 'Hiking', 'Photography'],
     photos: ['https://images.pexels.com/photos/1105058/pexels-photo-1105058.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/792326/pexels-photo-792326.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1564868/pexels-photo-1564868.jpeg?auto=compress&cs=tinysrgb&w=600']
   },
@@ -47,7 +55,11 @@ const partners: Partner[] = [
     college: 'renaissnace university',
     year: 1,
     description: 'Aspiring entrepreneur with a love for startups and innovation. Always looking for new business ideas and networking opportunities.',
-    diet: 'Non-vegetarian',
+    diet: 'non-vegetarian',
+    lookingFor: 'short-term',
+    smoker: 'yes',
+    drinker: 'yes',
+    communicationPreference: 'calling',
     interests: ['Entrepreneurship', 'Sports', 'Travel', 'Reading'],
     photos: ['https://images.pexels.com/photos/220474/pexels-photo-220474.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600']
   },
@@ -60,7 +72,11 @@ const partners: Partner[] = [
     college: 'renaissnace university',
     year: 1,
     description: 'Aspiring entrepreneur with a love for startups and innovation. Always looking for new business ideas and networking opportunities.',
-    diet: 'Non-vegetarian',
+    diet: 'non-vegetarian',
+    lookingFor: 'friendship',
+    smoker: 'no',
+    drinker: 'no',
+    communicationPreference: 'messaging',
     interests: ['Entrepreneurship', 'Sports', 'Travel', 'Reading'],
     photos: ['https://media.istockphoto.com/id/624129686/photo/portrait-boy.jpg?s=612x612&w=0&k=20&c=bzU5INObuqZyjRv-WlzJNG-GY96D1i5NsrbZg1cm-34=', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600']
   },
