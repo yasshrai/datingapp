@@ -18,10 +18,10 @@ const profileSchema = z.object({
   age: z.number().min(18, { message: "You must be at least 18 years old." }).max(100, { message: "Age must be less than 100." }),
   course: z.string().min(2, { message: "Course is required." }),
   college: z.string().min(2, { message: "College is required." }),
-  year:z.string().min(1,{message:"year is required"}),
+  year: z.string().min(1, { message: "year is required" }),
   religion: z.string().min(2, { message: "religion is required" }),
-  bio: z.string().min(4, { message: "Bio must be at least 10 characters." }).max(20, { message: "Bio must be less than 500 characters." }),
-  description: z.string().min(10, { message: "Description must be at least 20 characters." }).max(1000, { message: "Description must be less than 1000 characters." }),
+  bio: z.string().min(4, { message: "Bio must be at least 4 characters." }).max(20, { message: "Bio must be less than 20 characters." }),
+  description: z.string().min(10, { message: "Description must be at least 10 characters." }).max(1000, { message: "Description must be less than 1000 characters." }),
   diet: z.enum(["vegetarian", "non-vegetarian"]),
   lookingFor: z.enum(["long-term", "short-term", "friendship"]),
   smoker: z.enum(["yes", "no"]),
@@ -56,7 +56,15 @@ const colleges = [
   "prestige university",
   "Other"
 ]
-
+const religions = [
+  "hinduism",
+  "islam",
+  "jainism",
+  "christianity",
+  "skihism",
+  "buddhism",
+  "other"
+]
 export default function ProfileCompletion() {
   const router = useRouter()
   const [photos, setPhotos] = useState<string[]>([])
@@ -68,7 +76,7 @@ export default function ProfileCompletion() {
       age: 18,
       course: "",
       college: "",
-      year:"",
+      year: "",
       religion: "",
       bio: "",
       description: "",
@@ -112,21 +120,21 @@ export default function ProfileCompletion() {
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     const formData = new FormData()
-    
+
     files.forEach((file, index) => {
       formData.append(`photo${index}`, file)
     })
-  
+
     try {
       const response = await fetch('/api/upload-photos', {
         method: 'POST',
         body: formData,
       })
-  
+
       if (!response.ok) {
         throw new Error('Failed to upload photos')
       }
-  
+
       const data = await response.json()
       setPhotos(data.photoUrls)
       form.setValue('photos', data.photoUrls)
@@ -218,7 +226,7 @@ export default function ProfileCompletion() {
               </FormItem>
             )}
           />
-           <FormField
+          <FormField
             control={form.control}
             name="year"
             render={({ field }) => (
@@ -237,9 +245,21 @@ export default function ProfileCompletion() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Religion</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your religion" {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="select your religion"/>
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {religions.map((religion)=>(
+                      <SelectItem key={religion} value={religion}>
+                        {religion}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
