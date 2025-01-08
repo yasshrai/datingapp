@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
     age: { type: Number, required: true },
     course: { type: String, required: true },
     college: { type: String, required: true },
+    religion:{type:String,required:true},
     year: { type: Number, required: true },
     bio: { type: String, required: true },
     description: { type: String, required: true },

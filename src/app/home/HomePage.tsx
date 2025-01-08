@@ -19,6 +19,7 @@ export interface Partner {
   year: number
   bio: string
   description: string
+  religion: string
   diet: 'vegetarian' | 'non-vegetarian'
   lookingFor: 'long-term' | 'short-term' | 'friendship'
   smoker: 'yes' | 'no'
@@ -31,6 +32,7 @@ export interface Partner {
 const partners: Partner[] = [
   {
     id: 1,
+    religion: "hindu",
     name: 'Alice Johnson',
     bio: "moody",
     age: 22,
@@ -51,6 +53,7 @@ const partners: Partner[] = [
     name: 'Bob Smith',
     age: 23,
     bio: "foody",
+    religion: "hindu",
     course: 'Business Administration',
     college: 'renaissnace university',
     year: 1,
@@ -68,6 +71,7 @@ const partners: Partner[] = [
     name: 'Pat Smith',
     age: 23,
     bio: "foody",
+    religion: "hindu",
     course: 'Business Administration',
     college: 'renaissnace university',
     year: 1,

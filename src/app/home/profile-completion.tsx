@@ -18,6 +18,8 @@ const profileSchema = z.object({
   age: z.number().min(18, { message: "You must be at least 18 years old." }).max(100, { message: "Age must be less than 100." }),
   course: z.string().min(2, { message: "Course is required." }),
   college: z.string().min(2, { message: "College is required." }),
+  year:z.string().min(1,{message:"year is required"}),
+  religion: z.string().min(2, { message: "religion is required" }),
   bio: z.string().min(4, { message: "Bio must be at least 10 characters." }).max(20, { message: "Bio must be less than 500 characters." }),
   description: z.string().min(10, { message: "Description must be at least 20 characters." }).max(1000, { message: "Description must be less than 1000 characters." }),
   diet: z.enum(["vegetarian", "non-vegetarian"]),
@@ -27,6 +29,33 @@ const profileSchema = z.object({
   communicationPreference: z.enum(["calling", "messaging"]),
   photos: z.array(z.string()).min(3, { message: "Please upload at least 3 photos." }).max(3, { message: "You can upload a maximum of 3 photos." }),
 })
+
+const courses = [
+  "BCA",
+  "BBA",
+  "BCOM",
+  "Btech",
+  "agriculture",
+  "BALLB",
+  "BCOMLLB",
+  "MCA",
+  "MBA",
+  "MCOM",
+  "Mtech",
+  "MALLB",
+  "MCOMLLB",
+  "Other"
+
+]
+
+const colleges = [
+  "renaissnace university",
+  "SVVV",
+  "medicaps university",
+  "Malwa Institute of Technology",
+  "prestige university",
+  "Other"
+]
 
 export default function ProfileCompletion() {
   const router = useRouter()
@@ -39,6 +68,8 @@ export default function ProfileCompletion() {
       age: 18,
       course: "",
       college: "",
+      year:"",
+      religion: "",
       bio: "",
       description: "",
       diet: "vegetarian",
@@ -49,20 +80,31 @@ export default function ProfileCompletion() {
       photos: [],
     },
   })
-
   async function onSubmit(values: z.infer<typeof profileSchema>) {
     try {
-      console.log(values)
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create profile')
+      }
+      const data = await response.json()
+
       toast({
         title: "Profile completed",
         description: "Your profile has been successfully created.",
       })
       router.push('/home')
     } catch (error) {
+      console.error('Error creating profile:', error)
       toast({
         title: "Error",
-        description: "There was a problem completing your profile. Please try again."+ error,
+        description: "There was a problem completing your profile. Please try again.",
         variant: "destructive",
       })
     }
@@ -112,9 +154,20 @@ export default function ProfileCompletion() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Course</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your course" {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your course" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {courses.map((course) => (
+                      <SelectItem key={course} value={course}>
+                        {course}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -125,8 +178,45 @@ export default function ProfileCompletion() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>College</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your college" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {colleges.map((college) => (
+                      <SelectItem key={college} value={college}>
+                        {college}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+           <FormField
+            control={form.control}
+            name="year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>year</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your college" {...field} />
+                  <Input placeholder="study year" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="religion"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Religion</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your religion" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,7 +232,7 @@ export default function ProfileCompletion() {
                   <Textarea placeholder="A short bio about yourself" {...field} />
                 </FormControl>
                 <FormDescription>
-                  write your Bio (max 20 characters).
+                  Write your Bio (max 20 characters).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -158,7 +248,7 @@ export default function ProfileCompletion() {
                   <Textarea placeholder="Describe yourself in detail" {...field} />
                 </FormControl>
                 <FormDescription>
-                  A more detailed description about yourself, your interests, and what you &apoos;re looking for (max 1000 characters).
+                  A more detailed description about yourself, your interests, and what you're looking for (max 1000 characters).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -299,7 +389,7 @@ export default function ProfileCompletion() {
           <FormField
             control={form.control}
             name="photos"
-            render={({  }) => (
+            render={({ }) => (
               <FormItem>
                 <FormLabel>Photos</FormLabel>
                 <FormControl>

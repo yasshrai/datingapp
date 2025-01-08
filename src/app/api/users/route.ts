@@ -5,7 +5,7 @@ import User from "@/model/User"
 export async function GET() {
     try {
         await dbConnect()
-        const users = await User.find({}).limit(10)
+        const users = await User.find({})
         return NextResponse.json({ users })
     } catch (e) {
         console.error(e)
