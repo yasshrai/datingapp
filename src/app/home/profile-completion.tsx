@@ -109,14 +109,36 @@ export default function ProfileCompletion() {
       })
     }
   }
-
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
-    const newPhotos = files.map(file => URL.createObjectURL(file))
-    setPhotos(prevPhotos => [...prevPhotos, ...newPhotos].slice(0, 3))
-    form.setValue('photos', [...photos, ...newPhotos].slice(0, 3))
+    const formData = new FormData()
+    
+    files.forEach((file, index) => {
+      formData.append(`photo${index}`, file)
+    })
+  
+    try {
+      const response = await fetch('/api/upload-photos', {
+        method: 'POST',
+        body: formData,
+      })
+  
+      if (!response.ok) {
+        throw new Error('Failed to upload photos')
+      }
+  
+      const data = await response.json()
+      setPhotos(data.photoUrls)
+      form.setValue('photos', data.photoUrls)
+    } catch (error) {
+      console.error('Error uploading photos:', error)
+      toast({
+        title: "Error",
+        description: "There was a problem uploading your photos. Please try again.",
+        variant: "destructive",
+      })
+    }
   }
-
   return (
     <div className="container mx-auto p-4 max-w-2xl">
       <h1 className="text-2xl font-bold mb-4">Complete Your Profile</h1>
