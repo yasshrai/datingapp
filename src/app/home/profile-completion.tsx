@@ -13,12 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/hooks/use-toast"
 import { UploadButton } from "@/utils/uploadthing";
+import { useSession } from 'next-auth/react'
 
 const profileSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   age: z.number().min(18, { message: "You must be at least 18 years old." }).max(100, { message: "Age must be less than 100." }),
   course: z.string().min(2, { message: "Course is required." }),
   college: z.string().min(2, { message: "College is required." }),
+  email: z.string().email(),
   year: z.string().min(1, { message: "Year is required" }),
   religion: z.string().min(2, { message: "Religion is required" }),
   bio: z.string().min(4, { message: "Bio must be at least 4 characters." }).max(20, { message: "Bio must be less than 20 characters." }),
@@ -70,6 +72,7 @@ export default function ProfileCompletion() {
   const [photosurl, setPhotosUrl1] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const [newInterest, setNewInterest] = useState("")
+  const { data: session, status } = useSession()
 
 
   const addItem = (newUrl: string) => {
@@ -88,6 +91,7 @@ export default function ProfileCompletion() {
     defaultValues: {
       name: "",
       age: 18,
+      email: session?.user?.email!,
       course: "",
       college: "",
       year: "",
@@ -165,6 +169,21 @@ export default function ProfileCompletion() {
                   <Input placeholder="Your name" {...field} />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input {...form.register("email")} // Still register for submission
+                    readOnly // Make it read-only
+                    value={session?.user?.email || ""} />
+                </FormControl>
+                <FormDescription>This is your email address associated with your account.</FormDescription>
               </FormItem>
             )}
           />

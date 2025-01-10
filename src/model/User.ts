@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    email:{type:String,required:true},
     age: { type: Number, required: true },
     course: { type: String, required: true },
     college: { type: String, required: true },
