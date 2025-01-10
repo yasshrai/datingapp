@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/hooks/use-toast"
+import { UploadButton } from "@/utils/uploadthing";
 
 const profileSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -27,7 +28,7 @@ const profileSchema = z.object({
   smoker: z.enum(["yes", "no"]),
   drinker: z.enum(["yes", "no"]),
   communicationPreference: z.enum(["calling", "messaging"]),
-  photos: z.array(z.string()).min(3, { message: "Please upload at least 3 photos." }).max(3, { message: "You can upload a maximum of 3 photos." }),
+  photos: z.array(z.string())
 })
 
 const courses = [
@@ -47,7 +48,6 @@ const courses = [
   "Other"
 
 ]
-
 const colleges = [
   "renaissnace university",
   "SVVV",
@@ -67,8 +67,18 @@ const religions = [
 ]
 export default function ProfileCompletion() {
   const router = useRouter()
-  const [photos, setPhotos] = useState<string[]>([])
-
+  const [photosurl, setPhotosUrl1] = useState<string[]>([])
+  const addItem = (newUrl: string) => {
+    if (photosurl.length < 3 && newUrl) {
+      setPhotosUrl1((prevItems) => [...prevItems, newUrl]);
+    } else if (photosurl.length >= 3) {
+      toast({
+        title: "Limit reached",
+        description: "You can only upload 3 photos.",
+        variant: "destructive",
+      });
+    }
+  };
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -90,63 +100,37 @@ export default function ProfileCompletion() {
   })
   async function onSubmit(values: z.infer<typeof profileSchema>) {
     try {
+      if (photosurl.length !== 3) {
+        toast({
+          title: "Incomplete",
+          description: "Please upload exactly 3 photos before submitting.",
+          variant: "destructive",
+        });
+        return;
+      }
+      values.photos = photosurl;
       const response = await fetch('/api/users', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
-      })
+      });
 
-      if (!response.ok) {
-        throw new Error('Failed to create profile')
-      }
-      const data = await response.json()
+      if (!response.ok) throw new Error('Failed to create profile');
 
       toast({
         title: "Profile completed",
         description: "Your profile has been successfully created.",
-      })
-      router.push('/home')
+      });
+      router.push('/home');
     } catch (error) {
-      console.error('Error creating profile:', error)
       toast({
         title: "Error",
         description: "There was a problem completing your profile. Please try again.",
         variant: "destructive",
-      })
+      });
     }
   }
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-    const formData = new FormData()
 
-    files.forEach((file, index) => {
-      formData.append(`photo${index}`, file)
-    })
-
-    try {
-      const response = await fetch('/api/upload-photos', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to upload photos')
-      }
-
-      const data = await response.json()
-      setPhotos(data.photoUrls)
-      form.setValue('photos', data.photoUrls)
-    } catch (error) {
-      console.error('Error uploading photos:', error)
-      toast({
-        title: "Error",
-        description: "There was a problem uploading your photos. Please try again.",
-        variant: "destructive",
-      })
-    }
-  }
   return (
     <div className="container mx-auto p-4 max-w-2xl">
       <h1 className="text-2xl font-bold mb-4">Complete Your Profile</h1>
@@ -249,11 +233,11 @@ export default function ProfileCompletion() {
 
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="select your religion"/>
+                      <SelectValue placeholder="select your religion" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {religions.map((religion)=>(
+                    {religions.map((religion) => (
                       <SelectItem key={religion} value={religion}>
                         {religion}
                       </SelectItem>
@@ -431,32 +415,47 @@ export default function ProfileCompletion() {
           <FormField
             control={form.control}
             name="photos"
-            render={({ }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Photos</FormLabel>
                 <FormControl>
-                  <div>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={handlePhotoUpload}
-                      className="mb-2"
-                    />
-                    <div className="grid grid-cols-3 gap-2">
-                      {photos.map((photo, index) => (
-                        <img key={index} src={photo} alt={`Uploaded photo ${index + 1}`} className="w-full h-32 object-cover rounded" />
-                      ))}
-                    </div>
+                  <div className="flex space-x-2">
+                    {[...Array(3)].map((_, idx) => (
+                      <UploadButton
+                        key={idx}
+                        className="h-40 w-40"
+                        endpoint="imageUploader"
+                        disabled={photosurl.length >= 3}
+                        onClientUploadComplete={(res) => {
+                          if (res && res[0]?.url) addItem(res[0].url);
+                        }}
+                        onUploadError={(error) => {
+                          toast({
+                            title: "Upload Error",
+                            description: error.message,
+                            variant: "destructive",
+                          });
+                        }}
+                      />
+                    ))}
                   </div>
                 </FormControl>
-                <FormDescription>
-                  Please upload 3 photos of yourself.
-                </FormDescription>
+                <div className="grid grid-cols-3 gap-2 mt-4">
+                  {photosurl.map((url, index) => (
+                    <img
+                      key={index}
+                      src={url}
+                      alt={`Uploaded photo ${index + 1}`}
+                      className="w-full h-32 object-cover rounded"
+                    />
+                  ))}
+                </div>
+                <FormDescription>Please upload 3 photos of yourself.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
-          />
+          />;
+
           <Button type="submit">Complete Profile</Button>
         </form>
       </Form>
