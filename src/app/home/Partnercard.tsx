@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
 import { useState } from "react"
-import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity,  ChevronLeft, ChevronRight } from 'lucide-react'
+import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Partner } from "./HomePage"
 
