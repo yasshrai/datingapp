@@ -71,7 +71,7 @@ export default function ProfileCompletion() {
   const [interests, setInterests] = useState<string[]>([])
   const [newInterest, setNewInterest] = useState("")
 
-  
+
   const addItem = (newUrl: string) => {
     if (photosurl.length < 3 && newUrl) {
       setPhotosUrl1((prevItems) => [...prevItems, newUrl]);
@@ -120,7 +120,9 @@ export default function ProfileCompletion() {
       });
 
       if (!response.ok) throw new Error('Failed to create profile');
-
+      form.reset()
+      setPhotosUrl1([])
+      setInterests([])
       toast({
         title: "Profile completed",
         description: "Your profile has been successfully created.",
@@ -232,10 +234,21 @@ export default function ProfileCompletion() {
             name="year"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>year</FormLabel>
-                <FormControl>
-                  <Input placeholder="study year" {...field} />
-                </FormControl>
+                <FormLabel>Year</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select study year" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {[...Array(10)].map((_, i) => (
+                      <SelectItem key={i + 1} value={(i + 1).toString()}>
+                        Year {i + 1}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -498,8 +511,7 @@ export default function ProfileCompletion() {
                 <FormMessage />
               </FormItem>
             )}
-          />;
-
+          />
           <Button type="submit">Complete Profile</Button>
         </form>
       </Form>
