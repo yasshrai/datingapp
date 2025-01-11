@@ -124,13 +124,23 @@ export default function ProfileCompletion() {
       });
 
       if (!response.ok) throw new Error('Failed to create profile');
-      form.reset()
-      setPhotosUrl1([])
-      setInterests([])
+      const response2 = await fetch('/api/completeprofile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: values.email,
+        }),
+      })
+      if (!response2.ok) throw new Error('Failed to create profile');
       toast({
         title: "Profile completed",
         description: "Your profile has been successfully created.",
       });
+      form.reset()
+      setPhotosUrl1([])
+      setInterests([])
       router.push('/home');
     } catch (error) {
       toast({
@@ -147,7 +157,7 @@ export default function ProfileCompletion() {
       setNewInterest("")
     }
   }
-
+  
   const removeInterest = (interest: string) => {
     const updatedInterests = interests.filter(i => i !== interest)
     setInterests(updatedInterests)

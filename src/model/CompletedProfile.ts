@@ -1,14 +1,12 @@
 import mongoose from 'mongoose';
 
 const completedProfileSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-        unique: true,
-    },
-    completedAt: { type: Date, default: Date.now },
-});
+    email: {
+        type: String,
+        unique: true
+    }
+},
+    { timestamps: true });
 
 const CompletedProfile =
     mongoose.models.CompletedProfile ||
