@@ -27,7 +27,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="space-x-4"
           >
-            <Button asChild  className="text-white hover:text-pink-300">
+            <Button asChild className="text-white hover:text-pink-300">
               <Link href="/login">Login</Link>
             </Button>
           </motion.div>

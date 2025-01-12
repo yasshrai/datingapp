@@ -157,7 +157,7 @@ export default function ProfileCompletion() {
       setNewInterest("")
     }
   }
-  
+
   const removeInterest = (interest: string) => {
     const updatedInterests = interests.filter(i => i !== interest)
     setInterests(updatedInterests)

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence } from 'framer-motion'
-import { Heart, MessageCircle, User, Menu, LogOut, Search, HeartIcon } from 'lucide-react'
+import { Heart, User, Menu, LogOut, Search, HeartIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "next-auth/react"
