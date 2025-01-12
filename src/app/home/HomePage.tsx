@@ -117,10 +117,7 @@ export default function HomePage() {
         </Link>
         <nav className="hidden md:flex space-x-4">
           <Button variant="ghost" className="text-white">
-            <MessageCircle className="mr-2" /> Messages
-          </Button>
-          <Button variant="ghost" className="text-white">
-            <User className="mr-2" /> Likes
+            <User className="mr-2" /> Profile
           </Button>
           <Button onClick={() => signOut({ redirectTo: "/signup" })}>
             <LogOut className='mr-2' /> Logout
@@ -135,10 +132,7 @@ export default function HomePage() {
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
             <nav className="flex flex-col space-y-4">
               <Button variant="ghost">
-                <MessageCircle className="mr-2" /> Messages
-              </Button>
-              <Button variant="ghost">
-                <User className="mr-2" /> Likes
+                <User className="mr-2" /> Profile
               </Button>
               <Button onClick={() => signOut({ redirectTo: "/signup" })}>
                 <LogOut className='mr-2' /> Logout
@@ -157,8 +151,8 @@ export default function HomePage() {
               </Button>
             </div>
             <div className='w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg'>
-              <Button variant="ghost">
-                <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold'>REQUEST</p>
+              <Button variant="ghost" className='w-full'>
+                <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold '>Likes</p>
               </Button>
             </div>
           </div>
