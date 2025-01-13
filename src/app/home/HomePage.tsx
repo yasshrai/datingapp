@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "next-auth/react"
 import PartnerCard from "./Partnercard"
 import { SearchDialog } from '@/components/SearchDialog'
+import axios from 'axios'
 
 export interface Partner {
   id: number
@@ -29,62 +30,14 @@ export interface Partner {
   photos: string[]
 }
 
-const partners: Partner[] = [
-  {
-    id: 1,
-    religion: "hindu",
-    name: 'Alice Johnson',
-    bio: "moody",
-    age: 22,
-    course: 'Computer Science',
-    college: 'renaissnace university',
-    year: 3,
-    description: 'Passionate about coding and AI. Love to explore new technologies and push the boundaries of what\'s possible with software.',
-    diet: 'vegetarian',
-    lookingFor: 'long-term',
-    smoker: 'no',
-    drinker: 'no',
-    communicationPreference: 'messaging',
-    interests: ['Technology', 'Music', 'Hiking', 'Photography'],
-    photos: ['https://images.pexels.com/photos/1105058/pexels-photo-1105058.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/792326/pexels-photo-792326.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1564868/pexels-photo-1564868.jpeg?auto=compress&cs=tinysrgb&w=600']
-  },
-  {
-    id: 2,
-    name: 'Bob Smith',
-    age: 23,
-    bio: "foody",
-    religion: "hindu",
-    course: 'Business Administration',
-    college: 'renaissnace university',
-    year: 1,
-    description: 'Aspiring entrepreneur with a love for startups and innovation. Always looking for new business ideas and networking opportunities.',
-    diet: 'non-vegetarian',
-    lookingFor: 'short-term',
-    smoker: 'yes',
-    drinker: 'yes',
-    communicationPreference: 'calling',
-    interests: ['Entrepreneurship', 'Sports', 'Travel', 'Reading'],
-    photos: ['https://images.pexels.com/photos/220474/pexels-photo-220474.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600']
-  },
-  {
-    id: 3,
-    name: 'Pat Smith',
-    age: 23,
-    bio: "foody",
-    religion: "hindu",
-    course: 'Business Administration',
-    college: 'renaissnace university',
-    year: 1,
-    description: 'Aspiring entrepreneur with a love for startups and innovation. Always looking for new business ideas and networking opportunities.',
-    diet: 'non-vegetarian',
-    lookingFor: 'friendship',
-    smoker: 'no',
-    drinker: 'no',
-    communicationPreference: 'messaging',
-    interests: ['Entrepreneurship', 'Sports', 'Travel', 'Reading'],
-    photos: ['https://media.istockphoto.com/id/624129686/photo/portrait-boy.jpg?s=612x612&w=0&k=20&c=bzU5INObuqZyjRv-WlzJNG-GY96D1i5NsrbZg1cm-34=', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600', 'https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg?auto=compress&cs=tinysrgb&w=600']
-  },
-]
+interface responseData {
+  success: boolean
+  data: Partner[]
+}
+
+const response = await axios.get("/api/users");
+const partners: responseData = response.data; // Assuming response.data is already an array of Partner objects
+console.log(partners)
 
 export default function HomePage() {
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0)
@@ -93,16 +46,16 @@ export default function HomePage() {
 
   const nextPartner = () => {
     setDirection('left')
-    setCurrentPartnerIndex((prevIndex) => (prevIndex + 1) % partners.length)
+    setCurrentPartnerIndex((prevIndex) => (prevIndex + 1) % partners.data.length)
   }
 
   const prevPartner = () => {
     setDirection('right')
-    setCurrentPartnerIndex((prevIndex) => (prevIndex - 1 + partners.length) % partners.length)
+    setCurrentPartnerIndex((prevIndex) => (prevIndex - 1 + partners.data.length) % partners.data.length)
   }
 
   const handleSelectPartner = (partner: Partner) => {
-    const index = partners.findIndex(p => p.id === partner.id)
+    const index = partners.data.findIndex(p => p.id === partner.id)
     if (index !== -1) {
       setCurrentPartnerIndex(index)
     }
@@ -158,8 +111,8 @@ export default function HomePage() {
           </div>
           <AnimatePresence mode="wait" custom={direction}>
             <PartnerCard
-              key={partners[currentPartnerIndex].id}
-              partner={partners[currentPartnerIndex]}
+              key={partners.data[currentPartnerIndex].id}
+              partner={partners.data[currentPartnerIndex]}
               onNext={nextPartner}
               onPrev={prevPartner}
               direction={direction}
@@ -169,9 +122,11 @@ export default function HomePage() {
       </main>
 
       <SearchDialog
+        key={partners.data[currentPartnerIndex].id}
+
         isOpen={isSearchDialogOpen}
         onClose={() => setIsSearchDialogOpen(false)}
-        partners={partners}
+        partners={partners.data}
         onSelectPartner={handleSelectPartner}
       />
     </div>

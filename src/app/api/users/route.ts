@@ -1,15 +1,27 @@
 import { NextResponse } from 'next/server'
 import dbConnect from "@/lib/mongodb"
 import User from "@/model/User"
+import { auth } from "@/lib/auth"
 
 export async function GET() {
     try {
-        await dbConnect()
-        const users = await User.find({})
-        return NextResponse.json({ users })
-    } catch (e) {
-        console.error(e)
-        return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 })
+        const session = await auth()
+        const Useremail = session?.user?.email
+        await dbConnect();
+        const users = await User.find({ email: { $ne: Useremail } });
+        return NextResponse.json({
+            success: true,
+            data: users,
+        });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return NextResponse.json(
+            {
+                success: false,
+                message: 'Failed to fetch users',
+            },
+            { status: 500 }
+        );
     }
 }
 

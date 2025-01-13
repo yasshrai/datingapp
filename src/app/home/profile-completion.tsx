@@ -73,6 +73,7 @@ export default function ProfileCompletion() {
   const [interests, setInterests] = useState<string[]>([])
   const [newInterest, setNewInterest] = useState("")
   const { data: session, status } = useSession()
+  const [disabledButton,setDisabledButton] = useState<boolean>(false)
 
 
   const addItem = (newUrl: string) => {
@@ -107,6 +108,7 @@ export default function ProfileCompletion() {
     },
   })
   async function onSubmit(values: z.infer<typeof profileSchema>) {
+    setDisabledButton(true)
     try {
       if (photosurl.length !== 3) {
         toast({
@@ -149,6 +151,7 @@ export default function ProfileCompletion() {
         variant: "destructive",
       });
     }
+    setDisabledButton(false)
   }
   const addInterest = () => {
     if (newInterest && !interests.includes(newInterest)) {
@@ -541,7 +544,7 @@ export default function ProfileCompletion() {
               </FormItem>
             )}
           />
-          <Button type="submit">Complete Profile</Button>
+          <Button type="submit" disabled={disabledButton} >Complete Profile</Button>
         </form>
       </Form>
     </div>
