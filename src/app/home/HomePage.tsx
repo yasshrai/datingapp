@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { AnimatePresence } from 'framer-motion'
 import { Heart, User, Menu, LogOut, Search, HeartIcon } from 'lucide-react'
@@ -30,32 +30,42 @@ export interface Partner {
   photos: string[]
 }
 
-interface responseData {
+interface ResponseData {
   success: boolean
   data: Partner[]
 }
 
-const response = await axios.get("/api/users");
-const partners: responseData = response.data; // Assuming response.data is already an array of Partner objects
-console.log(partners)
-
 export default function HomePage() {
+  const [partners, setPartners] = useState<Partner[]>([])
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false)
 
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await axios.get<ResponseData>("/api/users");
+        setPartners(response.data.data);
+      } catch (error) {
+        console.error("Error fetching partners:", error);
+      }
+    };
+
+    fetchPartners();
+  }, []);
+
   const nextPartner = () => {
     setDirection('left')
-    setCurrentPartnerIndex((prevIndex) => (prevIndex + 1) % partners.data.length)
+    setCurrentPartnerIndex((prevIndex) => (prevIndex + 1) % partners.length)
   }
 
   const prevPartner = () => {
     setDirection('right')
-    setCurrentPartnerIndex((prevIndex) => (prevIndex - 1 + partners.data.length) % partners.data.length)
+    setCurrentPartnerIndex((prevIndex) => (prevIndex - 1 + partners.length) % partners.length)
   }
 
   const handleSelectPartner = (partner: Partner) => {
-    const index = partners.data.findIndex(p => p.id === partner.id)
+    const index = partners.findIndex(p => p.id === partner.id)
     if (index !== -1) {
       setCurrentPartnerIndex(index)
     }
@@ -110,23 +120,23 @@ export default function HomePage() {
             </div>
           </div>
           <AnimatePresence mode="wait" custom={direction}>
-            <PartnerCard
-              key={partners.data[currentPartnerIndex].id}
-              partner={partners.data[currentPartnerIndex]}
-              onNext={nextPartner}
-              onPrev={prevPartner}
-              direction={direction}
-            />
+            {partners.length > 0 && (
+              <PartnerCard
+                key={partners[currentPartnerIndex].id}
+                partner={partners[currentPartnerIndex]}
+                onNext={nextPartner}
+                onPrev={prevPartner}
+                direction={direction}
+              />
+            )}
           </AnimatePresence>
         </div>
       </main>
 
       <SearchDialog
-        key={partners.data[currentPartnerIndex].id}
-
         isOpen={isSearchDialogOpen}
         onClose={() => setIsSearchDialogOpen(false)}
-        partners={partners.data}
+        partners={partners}
         onSelectPartner={handleSelectPartner}
       />
     </div>

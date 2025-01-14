@@ -36,7 +36,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
           onChange={(e) => setSearchTerm(e.target.value)}
           className="mb-4"
         />
-        <ScrollArea className="h-[300px] ">
+        <ScrollArea className="h-[300px]">
           {filteredPartners.map((partner) => (
             <div
               key={partner.id}
