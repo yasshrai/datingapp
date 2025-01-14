@@ -10,30 +10,8 @@ import { signOut } from "next-auth/react"
 import PartnerCard from "./Partnercard"
 import { SearchDialog } from '@/components/SearchDialog'
 import axios from 'axios'
-
-export interface Partner {
-  id: number
-  name: string
-  age: number
-  course: string
-  college: string
-  year: number
-  bio: string
-  description: string
-  religion: string
-  diet: 'vegetarian' | 'non-vegetarian'
-  lookingFor: 'long-term' | 'short-term' | 'friendship'
-  smoker: 'yes' | 'no'
-  drinker: 'yes' | 'no'
-  communicationPreference: 'calling' | 'messaging'
-  interests: string[]
-  photos: string[]
-}
-
-interface ResponseData {
-  success: boolean
-  data: Partner[]
-}
+import { Partner } from '@/types/partner'
+import { ResponseData } from "@/types/responseData"
 
 export default function HomePage() {
   const [partners, setPartners] = useState<Partner[]>([])

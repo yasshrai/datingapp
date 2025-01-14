@@ -6,7 +6,7 @@ import { useSwipeable } from 'react-swipeable'
 import { useState } from "react"
 import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { Partner } from "./HomePage"
+import { Partner } from "@/types/partner"
 
 export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)

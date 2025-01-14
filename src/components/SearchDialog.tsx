@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Partner } from '../app/home/HomePage'
-
+import { Partner } from '@/types/partner'
 interface SearchDialogProps {
   isOpen: boolean
   onClose: () => void
