@@ -7,11 +7,14 @@ import { useState } from "react"
 import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Partner } from "@/types/partner"
+import { likePartner } from "@/app/actions/likeuser"
+import { useToast } from "@/hooks/use-toast"
 
 export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const { toast } = useToast()
 
   const handlers = useSwipeable({
     onSwipedLeft: () => onNext(),
@@ -123,7 +126,26 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
                 <X className="w-6 h-6" />
               </Button>
-              <Button onClick={onNext} variant={"outline"} className="bg-red-700 hover:bg-red-600 size-12 rounded-full">
+              <Button
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    await likePartner( partner.email);
+                    toast({
+                      className:"bg-green-700",
+                      description: "you liked " + partner.name,
+                    })
+                    onNext();
+                  } catch (error) {
+                    toast({
+                      className: "bg-red-700",
+                      description: "you alreay liked " + partner.name,
+                    })
+                  }
+                }}
+                variant={"outline"}
+                className="bg-red-700 hover:bg-red-600 size-12 rounded-full"
+              >
                 <ThumbsUp className="w-6 h-6" />
               </Button>
             </div>
