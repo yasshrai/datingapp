@@ -14,20 +14,8 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
 
   const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      if (currentPhotoIndex < partner.photos.length - 1) {
-        setCurrentPhotoIndex(currentPhotoIndex + 1)
-      } else {
-        onNext()
-      }
-    },
-    onSwipedRight: () => {
-      if (currentPhotoIndex > 0) {
-        setCurrentPhotoIndex(currentPhotoIndex - 1)
-      } else {
-        onPrev()
-      }
-    },
+    onSwipedLeft: () => onNext(),
+    onSwipedRight: () => onPrev(),
     trackMouse: true
   })
 
@@ -62,6 +50,9 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
     }
   })();
 
+  console.log('showDetails:', showDetails);
+  console.log('Rendering PartnerCard, showDetails:', showDetails);
+
   return (
     <>
 
@@ -75,7 +66,16 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         transition={{ type: 'tween', duration: 0.3 }}
       >
         <Card className="relative">
-          <CardContent className="p-0 relative aspect-[3/4] cursor-pointer" {...handlers} onClick={() => setShowDetails(true)}>
+          <CardContent
+            className="p-0 relative aspect-[3/4]"
+            {...handlers}
+            onClick={(e) => {
+              const target = e.target as HTMLElement;
+              if (target === e.currentTarget || target.tagName === 'IMG') {
+                setShowDetails(true);
+              }
+            }}
+          >
             <AnimatePresence initial={false} custom={direction}>
               <motion.img
                 key={currentPhotoIndex}
@@ -118,13 +118,12 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               <p className="text-sm text-white/80">{currentDetails.subtitle}</p>
             </div>
           </CardContent>
-          {/* Navigation buttons */}
           <div className="absolute -bottom-6 left-0 right-0 flex justify-center z-10">
             <div className='flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg'>
-              <Button onClick={(e) => { e.stopPropagation(); onPrev(); }} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
+              <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
                 <X className="w-6 h-6" />
               </Button>
-              <Button onClick={(e) => { e.stopPropagation(); onNext(); }} variant={"outline"} className="bg-red-700 hover:bg-red-600 size-12 rounded-full">
+              <Button onClick={onNext} variant={"outline"} className="bg-red-700 hover:bg-red-600 size-12 rounded-full">
                 <ThumbsUp className="w-6 h-6" />
               </Button>
             </div>
