@@ -139,7 +139,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                   } catch (error) {
                     toast({
                       className: "bg-red-700",
-                      description: "you alreay liked " + partner.name,
+                      description: "you already liked " + partner.name,
                     })
                   }
                 }}
