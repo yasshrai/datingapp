@@ -12,12 +12,14 @@ import { SearchDialog } from '@/components/SearchDialog'
 import axios from 'axios'
 import { Partner } from '@/types/partner'
 import { ResponseData } from "@/types/responseData"
+import { useRouter } from 'next/navigation'
 
 export default function HomePage() {
   const [partners, setPartners] = useState<Partner[]>([])
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false)
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -92,7 +94,7 @@ export default function HomePage() {
               </Button>
             </div>
             <div className='w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg'>
-              <Button variant="ghost" className='w-full'>
+              <Button variant="ghost" className='w-full' onClick={()=> router.push("/likes")}>
                 <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold '>Likes</p>
               </Button>
             </div>

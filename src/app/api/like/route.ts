@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const session = await auth()
     const Useremail = session?.user?.email
     const likes = await Like.find({ likedEmail: Useremail })
-    return NextResponse.json(likes);
+    return NextResponse.json({data:likes})
   } catch (error) {
     console.error('Error fetching likes:', error);
     return NextResponse.json({ error: 'Error fetching likes' }, { status: 500 });
