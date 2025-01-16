@@ -4,7 +4,7 @@ import { formatDate } from "@/utils/formateDate"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
+import { useRouter } from "next/navigation"
 export interface Like {
   liker: string
   likerEmail: string
@@ -17,6 +17,7 @@ interface LikedListProps {
 }
 
 export default function LikedList({ likes }: LikedListProps) {
+  const router = useRouter()
   if (likes.length === 0) {
     return (
       <Card>
@@ -43,7 +44,7 @@ export default function LikedList({ likes }: LikedListProps) {
                       <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${like.liker}`} alt={like.liker} />
                       <AvatarFallback>{like.liker.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    <div className="flex-1 space-y-1">
+                    <div className="flex-1 space-y-1" onClick={()=> router.push(`/user/${like.likerEmail}`)}>
                       <p className="text-sm font-medium leading-none">{like.liker}</p>
                       <p className="text-sm text-muted-foreground">{like.likerEmail}</p>
                       <p className="text-xs text-muted-foreground">
