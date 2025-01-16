@@ -1,34 +1,41 @@
+'use client'
 
-import { notFound } from 'next/navigation'
-import { Partner } from '@/types/partner';
-import PartnerCardSingle from '@/components/PartnerCardSingle';
+import { useParams } from 'next/navigation'
+import Usercard from './UserCard';
+import { fetchPartner } from "@/app/actions/likeuser";
+import { useState, useEffect } from 'react';
 
+export default function PartnerPage() {
+    const [userdata, setUserdata] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const params = useParams<{ email: string }>();
+    const email = params.email;
 
-export default async function Page({
-    params,
-}: {
-    params: { email: string }
-}) {
-    const email = (await params).email
-
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${email}`, {
-            next: { revalidate: 60 }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch user data')
+    useEffect(() => {
+        async function fetchPartnerData() {
+            try {
+                const data = await fetchPartner(email);
+                setUserdata(data);
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            } finally {
+                setLoading(false);
+            }
         }
 
-        const userData: Partner[] = await response.json()
-        return (
-            <>
-                <PartnerCardSingle partner={userData[0]}></PartnerCardSingle>
-            </>
-        )
-    } catch (error) {
-        console.error('Error fetching user data:', error)
-        notFound()
+        fetchPartnerData();
+    }, [email]);
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
+
+    if (!userdata) {
+        return <div>No user data found.</div>;
+    }
+
+    return (
+        <Usercard userdata={userdata} />
+    )
 }
 

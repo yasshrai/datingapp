@@ -1,6 +1,8 @@
 'use server'
 
 import { auth } from "@/lib/auth"
+import dbConnect from "@/lib/mongodb"
+import User from "@/model/User"
 
 export async function likePartner( email: String) {
   const session = await auth()
@@ -23,5 +25,13 @@ export async function likePartner( email: String) {
   }
 
   return response.json()
+}
+
+
+export async function fetchPartner(email: string) {
+  await dbConnect()
+  const decodedEmail = decodeURIComponent(email)
+  const userdetails = await User.find({ email: decodedEmail })
+  return userdetails
 }
 
