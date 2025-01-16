@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Partner } from '@/types/partner'
+import { useRouter } from 'next/navigation'
 interface SearchDialogProps {
   isOpen: boolean
   onClose: () => void
@@ -15,6 +16,7 @@ interface SearchDialogProps {
 export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: SearchDialogProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredPartners, setFilteredPartners] = useState<Partner[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     const filtered = partners.filter(partner =>
@@ -43,6 +45,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
               onClick={() => {
                 onSelectPartner(partner)
                 onClose()
+                router.push(`/user/${partner.email}`)
               }}
             >
               {partner.name}
