@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation'
 import Usercard from './UserCard';
-import { fetchPartner } from "@/app/actions/likeuser";
+import { fetchPartner } from "@/app/actions/fetchPartner";
 import { useState, useEffect } from 'react';
 
 export default function PartnerPage() {
