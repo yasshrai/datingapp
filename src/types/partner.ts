@@ -1,7 +1,7 @@
 export interface Partner {
     id: number
     name: string
-    email:String
+    email:string
     age: number
     course: string
     college: string

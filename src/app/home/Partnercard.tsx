@@ -1,19 +1,21 @@
+import React, { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { useState } from "react"
 import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
 import { useToast } from "@/hooks/use-toast"
+import ChatWindow from "./Chatwindow"
 
 export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const [showChatWindow, setShowChatWindow] = useState(false)
   const { toast } = useToast()
 
   const handlers = useSwipeable({
@@ -40,6 +42,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
       }
     }
   }
+
   const currentDetails = (() => {
     switch (currentPhotoIndex) {
       case 0:
@@ -53,12 +56,8 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
     }
   })();
 
-  console.log('showDetails:', showDetails);
-  console.log('Rendering PartnerCard, showDetails:', showDetails);
-
   return (
     <>
-
       <motion.div
         key={partner.id}
         custom={direction}
@@ -130,7 +129,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                 onClick={async (e) => {
                   e.stopPropagation();
                   try {
-                    await likePartner( partner.email);
+                    await likePartner(partner.email);
                     toast({
                       className:"bg-green-700",
                       description: "you liked " + partner.name,
@@ -157,7 +156,11 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           <PersonStandingIcon className="h-6 w-6" />
           <p>people</p>
         </Button>
-        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 " variant={"outline"}>
+        <Button 
+          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 " 
+          variant={"outline"}
+          onClick={() => setShowChatWindow(true)}
+        >
           <MessageCircle className="h-6 w-6" />
         </Button>
         <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32  outline outline-1 " variant={"outline"}>
@@ -165,6 +168,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           <p>confession</p>
         </Button>
       </div>
+
       {/* Dialog for details */}
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
         <DialogContent className="sm:max-w-[425px]">
@@ -178,7 +182,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               {partner.photos.map((photo, index) => (
                 <img
                   key={index}
-                  src={photo}
+                  src={photo || "/placeholder.svg"}
                   alt={`${partner.name}'s photo ${index + 1}`}
                   className="w-full h-24 object-cover cursor-pointer rounded"
                   onClick={() => setSelectedImage(photo)}
@@ -228,7 +232,19 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Chat Window Dialog */}
+      <Dialog open={showChatWindow} onOpenChange={setShowChatWindow}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Chat with {partner.name}</DialogTitle>
+          </DialogHeader>
+          <ChatWindow partner={partner} />
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">Close</Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
-
