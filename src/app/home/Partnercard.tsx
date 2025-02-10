@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
-import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
+import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight,Send } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
@@ -130,7 +130,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                 variant={"outline"}
                 onClick={() => setShowChatWindow(true)}
               >
-                <MessageCircle className="h-6 w-6" />
+                <Send className="h-6 w-6" />
               </Button>
               <Button
                 onClick={async (e) => {
