@@ -126,12 +126,19 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                 <X className="w-6 h-6" />
               </Button>
               <Button
+                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2 "
+                variant={"outline"}
+                onClick={() => setShowChatWindow(true)}
+              >
+                <MessageCircle className="h-6 w-6" />
+              </Button>
+              <Button
                 onClick={async (e) => {
                   e.stopPropagation();
                   try {
                     await likePartner(partner.email);
                     toast({
-                      className:"bg-green-700",
+                      className: "bg-green-700",
                       description: "you liked " + partner.name,
                     })
                     onNext();
@@ -156,8 +163,8 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           <PersonStandingIcon className="h-6 w-6" />
           <p>people</p>
         </Button>
-        <Button 
-          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 " 
+        <Button
+          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 "
           variant={"outline"}
           onClick={() => setShowChatWindow(true)}
         >
