@@ -73,3 +73,21 @@ body {
     @apply bg-background text-foreground;
   }
 }
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #000; /* Black track */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #333; /* Dark grey thumb */
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Lighter on hover */
+  }
+}

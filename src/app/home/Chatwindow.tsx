@@ -35,11 +35,12 @@ export default function ChatWindow({ partner }: { partner: Partner }) {
   }
 
   return (
-    <div className="flex flex-col h-[600px] bg-zinc-950 rounded-lg shadow-lg">
-      <div className="bg-zinc-900 p-4 border-b border-zinc-800">
+    <div className="w-full flex flex-col h-[600px] rounded-lg shadow-lg">
+      <div className="w-full flex flex-row gap-3  p-4 border-b border-zinc-800">
+        <img src={partner.photos[0]} className="size-10 rounded-xl"></img>
         <h2 className="text-xl font-semibold text-zinc-100">{partner.name}</h2>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="w-full flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
         {messages.map((message, index) => (
           <div
             key={index}
