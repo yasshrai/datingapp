@@ -35,7 +35,7 @@ export default function PartnerCard({
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [showChatWindow, setShowChatWindow] = useState(false)
-  const [showConfessionWindow, setShowConfessionWindow] = useState(true)
+  const [showConfessionWindow, setShowConfessionWindow] = useState(false)
   const [confessionMessage, setConfessionMessage] = useState("")
   const [confessionName, setConfessionName] = useState("")
   const router = useRouter()
