@@ -4,16 +4,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
 import { useState } from "react"
-import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight, HeartIcon } from 'lucide-react'
+import { Send, ThumbsUp, X, ChevronLeft, ChevronRight, HeartIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
 import { useToast } from "@/hooks/use-toast"
+import ChatWindow from "@/app/home/Chatwindow";
 
 export default function PartnerCardSingle({ partner }: { partner: Partner }) {
     const [showDetails, setShowDetails] = useState(false)
     const [selectedImage, setSelectedImage] = useState<string | null>(null)
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+    const [showChatWindow, setShowChatWindow] = useState(false)
     const { toast } = useToast()
 
     const currentDetails = (() => {
@@ -95,14 +97,17 @@ export default function PartnerCardSingle({ partner }: { partner: Partner }) {
                             >
                                 <ThumbsUp className="w-6 h-6" />
                             </Button>
+                            <Button
+                                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full"
+                                variant={"outline"}
+                                onClick={() => setShowChatWindow(true)}
+                            >
+                                <Send className="h-6 w-6" />
+                            </Button>
                         </div>
                     </div>
                 </Card>
                 <div className="flex justify-self-center mt-6 gap-1">
-
-                    <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 " variant={"outline"}>
-                        <MessageCircle className="h-6 w-6" />
-                    </Button>
 
                 </div>
                 {/* Dialog for details */}
@@ -147,7 +152,20 @@ export default function PartnerCardSingle({ partner }: { partner: Partner }) {
                         </DialogClose>
                     </DialogContent>
                 </Dialog>
-
+                 <Dialog open={showChatWindow} onOpenChange={setShowChatWindow}>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>Chat with {partner.name}</DialogTitle>
+                          </DialogHeader>
+                          <ChatWindow partner={partner} />
+                          <DialogClose asChild>
+                            <Button type="button" variant="secondary">
+                              Close
+                            </Button>
+                          </DialogClose>
+                        </DialogContent>
+                      </Dialog>
+                
                 {/* Dialog for full-size image */}
                 <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
                     <DialogContent className="sm:max-w-[90vw] sm:max-h-[90vh] p-0">
