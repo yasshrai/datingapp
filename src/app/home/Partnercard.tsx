@@ -1,60 +1,110 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"
-import { motion, AnimatePresence } from 'framer-motion'
-import { useSwipeable } from 'react-swipeable'
-import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight,Send } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { motion, AnimatePresence } from "framer-motion"
+import { useSwipeable } from "react-swipeable"
+import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Partner } from "@/types/partner"
+import type { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
 import { useToast } from "@/hooks/use-toast"
 import ChatWindow from "./Chatwindow"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { confessionService } from "@/app/service/ConfessionService"
+import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
 
-export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
+
+export default function PartnerCard({
+  partner,
+  onNext,
+  onPrev,
+  direction,
+}: { partner: Partner; onNext: () => void; onPrev: () => void; direction: "left" | "right" | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [showChatWindow, setShowChatWindow] = useState(false)
+  const [showConfessionWindow, setShowConfessionWindow] = useState(true)
+  const [confessionMessage, setConfessionMessage] = useState("")
+  const [confessionName, setConfessionName] = useState("")
+  const router = useRouter()
   const { toast } = useToast()
 
   const handlers = useSwipeable({
     onSwipedLeft: () => onNext(),
     onSwipedRight: () => onPrev(),
-    trackMouse: true
+    trackMouse: true,
   })
 
   const variants = {
-    enter: (direction: 'left' | 'right') => {
+    enter: (direction: "left" | "right") => {
       return {
-        x: direction === 'right' ? -300 : 300,
-        opacity: 0
+        x: direction === "right" ? -300 : 300,
+        opacity: 0,
       }
     },
     center: {
       x: 0,
-      opacity: 1
+      opacity: 1,
     },
-    exit: (direction: 'left' | 'right') => {
+    exit: (direction: "left" | "right") => {
       return {
-        x: direction === 'right' ? 300 : -300,
-        opacity: 0
+        x: direction === "right" ? 300 : -300,
+        opacity: 0,
       }
-    }
+    },
   }
 
   const currentDetails = (() => {
     switch (currentPhotoIndex) {
       case 0:
-        return { title: `${partner.name}, ${partner.age}`, subtitle: `${partner.course} - ${partner.college}, Year ${partner.year}` };
+        return {
+          title: `${partner.name}, ${partner.age}`,
+          subtitle: `${partner.course} - ${partner.college}, Year ${partner.year}`,
+        }
       case 1:
-        return { title: "Description", subtitle: partner.description };
+        return { title: "Description", subtitle: partner.description }
       case 2:
-        return { title: "Interests", subtitle: partner.interests.join(", ") };
+        return { title: "Interests", subtitle: partner.interests.join(", ") }
       default:
-        return { title: "", subtitle: "" };
+        return { title: "", subtitle: "" }
     }
-  })();
+  })()
+
+  const handleConfessionSubmit = async () => {
+    if (confessionMessage.trim()) {
+      try {
+        await confessionService.addConfession({
+          name: confessionName.trim() || "Anonymous",
+          message: confessionMessage.trim(),
+          timestamp: new Date().toISOString(),
+        })
+        toast({
+          className: "bg-green-700",
+          description: "Confession submitted successfully!",
+        })
+        setConfessionMessage("")
+        setConfessionName("")
+        setShowConfessionWindow(false)
+      } catch (error) {
+        toast({
+          className: "bg-red-700",
+          description: "Failed to submit confession. Please try again.",
+        })
+      }
+    }
+  }
 
   return (
     <>
@@ -65,16 +115,16 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         initial="enter"
         animate="center"
         exit="exit"
-        transition={{ type: 'tween', duration: 0.3 }}
+        transition={{ type: "tween", duration: 0.3 }}
       >
         <Card className="relative">
           <CardContent
             className="p-0 relative aspect-[3/4]"
             {...handlers}
             onClick={(e) => {
-              const target = e.target as HTMLElement;
-              if (target === e.currentTarget || target.tagName === 'IMG') {
-                setShowDetails(true);
+              const target = e.target as HTMLElement
+              if (target === e.currentTarget || target.tagName === "IMG") {
+                setShowDetails(true)
               }
             }}
           >
@@ -121,8 +171,12 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             </div>
           </CardContent>
           <div className="absolute -bottom-6 left-0 right-0 flex justify-center z-10">
-            <div className='flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg'>
-              <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
+            <div className="flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg">
+              <Button
+                onClick={onPrev}
+                variant={"outline"}
+                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2"
+              >
                 <X className="w-6 h-6" />
               </Button>
               <Button
@@ -134,14 +188,14 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               </Button>
               <Button
                 onClick={async (e) => {
-                  e.stopPropagation();
+                  e.stopPropagation()
                   try {
-                    await likePartner(partner.email);
+                    await likePartner(partner.email)
                     toast({
                       className: "bg-green-700",
                       description: "you liked " + partner.name,
                     })
-                    onNext();
+                    onNext()
                   } catch (error) {
                     toast({
                       className: "bg-red-700",
@@ -170,7 +224,11 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         >
           <MessageCircle className="h-6 w-6" />
         </Button>
-        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32  outline outline-1 " variant={"outline"}>
+        <Button
+          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32  outline outline-1 "
+          variant={"outline"}
+          onClick={() => setShowConfessionWindow(true)}
+        >
           <Activity className="h-6 w-6" />
           <p>confession</p>
         </Button>
@@ -180,8 +238,12 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{partner.name}, {partner.age}</DialogTitle>
-            <DialogDescription>{partner.course} - {partner.college}, Year {partner.year}</DialogDescription>
+            <DialogTitle>
+              {partner.name}, {partner.age}
+            </DialogTitle>
+            <DialogDescription>
+              {partner.course} - {partner.college}, Year {partner.year}
+            </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
@@ -204,7 +266,9 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               <h4 className="font-semibold mb-2">Interests</h4>
               <div className="flex flex-wrap gap-2">
                 {partner.interests.map((interest, index) => (
-                  <Badge key={index} variant="secondary">{interest}</Badge>
+                  <Badge key={index} variant="secondary">
+                    {interest}
+                  </Badge>
                 ))}
               </div>
             </div>
@@ -214,7 +278,9 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             </div>
           </div>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">Close</Button>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
           </DialogClose>
         </DialogContent>
       </Dialog>
@@ -223,11 +289,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="sm:max-w-[90vw] sm:max-h-[90vh] p-0">
           <div className="relative w-full h-full">
-            <img
-              src={selectedImage || ''}
-              alt="Full size"
-              className="w-full h-full object-contain"
-            />
+            <img src={selectedImage || ""} alt="Full size" className="w-full h-full object-contain" />
             <Button
               className="absolute top-2 right-2"
               size="icon"
@@ -248,10 +310,53 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           </DialogHeader>
           <ChatWindow partner={partner} />
           <DialogClose asChild>
-            <Button type="button" variant="secondary">Close</Button>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
           </DialogClose>
         </DialogContent>
+      </Dialog>
+
+      <Dialog open={showConfessionWindow} onOpenChange={setShowConfessionWindow}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Confession</DialogTitle>
+            <DialogDescription>Share your anonymous confession with everyone.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name (Optional)</Label>
+              <Input
+                id="name"
+                placeholder="Enter your name or 'NA'"
+                value={confessionName}
+                onChange={(e) => setConfessionName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="message">Confession</Label>
+              <Textarea
+                id="message"
+                placeholder="Type your confession here..."
+                value={confessionMessage}
+                onChange={(e) => setConfessionMessage(e.target.value)}
+                className="h-32"
+              />
+            </div>
+          </div>
+          <DialogFooter className="flex flex-col gap-2">
+            <Button onClick={handleConfessionSubmit}>Submit Confession</Button>
+            <Button onClick={() => router.push("/confessions")}>Show Confessions</Button>
+          </DialogFooter>
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogContent>
+
       </Dialog>
     </>
   )
 }
+
