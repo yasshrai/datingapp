@@ -59,7 +59,7 @@ export default function HomePage() {
           Campus Connection
         </Link>
         <nav className="hidden md:flex space-x-4">
-          <Button variant="ghost" className="text-white">
+          <Button variant="ghost" className="text-white" onClick={()=>router.push("/updateprofile")}>
             <User className="mr-2" /> Profile
           </Button>
           <Button onClick={() => signOut({ redirectTo: "/signup" })}>
@@ -74,7 +74,7 @@ export default function HomePage() {
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
             <nav className="flex flex-col space-y-4">
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={()=>router.push("/updateprofile")}>
                 <User className="mr-2" /> Profile
               </Button>
               <Button onClick={() => signOut({ redirectTo: "/signup" })}>
