@@ -10,6 +10,7 @@ import { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
 import { useToast } from "@/hooks/use-toast"
 import ChatWindow from "./Chatwindow"
+import LoveMessageButton from "@/components/ui/LoveMessageButton"
 
 export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
@@ -121,17 +122,11 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             </div>
           </CardContent>
           <div className="absolute -bottom-6 left-0 right-0 flex justify-center z-10">
-            <div className='flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg'>
+            <div className='flex justify-center bg-zinc-900 rounded-full px-2 py-1  shadow-lg'>
               <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
                 <X className="w-6 h-6" />
               </Button>
-              <Button
-                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2 "
-                variant={"outline"}
-                onClick={() => setShowChatWindow(true)}
-              >
-                <Send className="h-6 w-6" />
-              </Button>
+              <LoveMessageButton />
               <Button
                 onClick={async (e) => {
                   e.stopPropagation();
