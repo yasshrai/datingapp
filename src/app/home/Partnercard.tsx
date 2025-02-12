@@ -18,6 +18,7 @@ import type { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
 import { useToast } from "@/hooks/use-toast"
 import ChatWindow from "./Chatwindow"
+import LoveMessageButton from "@/components/ui/LoveMessageButton"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { confessionService } from "@/app/service/ConfessionService"
@@ -25,12 +26,7 @@ import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 
 
-export default function PartnerCard({
-  partner,
-  onNext,
-  onPrev,
-  direction,
-}: { partner: Partner; onNext: () => void; onPrev: () => void; direction: "left" | "right" | null }) {
+export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
@@ -171,21 +167,13 @@ export default function PartnerCard({
             </div>
           </CardContent>
           <div className="absolute -bottom-6 left-0 right-0 flex justify-center z-10">
-            <div className="flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg">
-              <Button
-                onClick={onPrev}
-                variant={"outline"}
-                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2"
-              >
+            <div className='flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg'>
+              <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
                 <X className="w-6 h-6" />
               </Button>
-              <Button
-                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2 "
-                variant={"outline"}
-                onClick={() => setShowChatWindow(true)}
-              >
-                <Send className="h-6 w-6" />
-              </Button>
+              <button onClick={() => setShowChatWindow(true)} >
+                <LoveMessageButton />
+              </button>
               <Button
                 onClick={async (e) => {
                   e.stopPropagation()
