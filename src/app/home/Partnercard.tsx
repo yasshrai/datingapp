@@ -175,22 +175,24 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                 <LoveMessageButton />
               </button>
               <Button
-                onClick={async (e) => {
-                  e.stopPropagation()
-                  try {
-                    await likePartner(partner.email)
-                    toast({
-                      className: "bg-green-700",
-                      description: "you liked " + partner.name,
-                    })
-                    onNext()
-                  } catch (error) {
-                    toast({
-                      className: "bg-green-700",
-                      description: "you already liked " + partner.name,
-                    })
-                  }
-                }}
+               onClick={async (e) => {
+                e.stopPropagation();
+                try {
+                  await likePartner(partner.email);
+                  toast({
+                    className: "bg-green-700",
+                    description: "You liked " + partner.name,
+                  });
+                } catch (error) {
+                  toast({
+                    className: "bg-green-700",
+                    description: "You already liked " + partner.name,
+                  });
+                } finally {
+                  onNext();
+                }
+              }}
+              
                 variant={"outline"}
                 className="bg-red-700 hover:bg-red-600 size-12 rounded-full"
               >
