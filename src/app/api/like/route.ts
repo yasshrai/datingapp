@@ -27,7 +27,10 @@ export async function POST(request: NextRequest) {
     if (!likerEmail || !likedEmail || !liker) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-
+    const alreadyLiked = await Like.findOne({liker,likerEmail,likedEmail});
+    if (alreadyLiked){
+      return NextResponse.json({error:"already liked"},{status:500})
+    }
     const newLike = new Like({
       liker,
       likerEmail,
