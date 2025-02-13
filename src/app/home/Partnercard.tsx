@@ -24,13 +24,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { confessionService } from "@/app/service/ConfessionService"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
+import ChatList from "./ChatList"
 
 
 export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  const [showChatWindow, setShowChatWindow] = useState(false)
+  const [showChatWindow, setShowChatWindow] = useState(false);
+  const [showChatList,setShowChatList] = useState(false);
   const [showConfessionWindow, setShowConfessionWindow] = useState(false)
   const [confessionMessage, setConfessionMessage] = useState("")
   const [confessionName, setConfessionName] = useState("")
@@ -211,7 +213,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         <Button
           className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 "
           variant={"outline"}
-          onClick={() => setShowChatWindow(true)}
+          onClick={() => setShowChatList(true)}
         >
           <MessageCircle className="h-6 w-6" />
         </Button>
@@ -300,6 +302,20 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             <DialogTitle>Chat with {partner.name}</DialogTitle>
           </DialogHeader>
           <ChatWindow partner={partner} />
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showChatList} onOpenChange={setShowChatList}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Chat with {partner.name}</DialogTitle>
+          </DialogHeader>
+          <ChatList />
           <DialogClose asChild>
             <Button type="button" variant="secondary">
               Close
