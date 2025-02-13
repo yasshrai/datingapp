@@ -70,9 +70,9 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           subtitle: `${partner.course} - ${partner.college}, Year ${partner.year}`,
         }
       case 1:
-        return { title: "Description", subtitle: partner.description }
+        return { name: partner.name, title: "Description", subtitle: partner.description }
       case 2:
-        return { title: "Interests", subtitle: partner.interests.join(", ") }
+        return { name: partner.name, title: "Interests", subtitle: partner.interests.join(", ") }
       default:
         return { title: "", subtitle: "" }
     }
@@ -162,6 +162,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 p-4 pb-16 bg-gradient-to-t from-black/70 to-transparent">
+              <h2 className="text-lg font-bold text-white">{currentDetails.name}</h2>
               <h3 className="text-2xl font-semibold text-white pb-4">{currentDetails.title}</h3>
               <p className="text-sm text-white/80">{currentDetails.subtitle}</p>
             </div>
@@ -175,24 +176,24 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                 <LoveMessageButton />
               </button>
               <Button
-               onClick={async (e) => {
-                e.stopPropagation();
-                try {
-                  await likePartner(partner.email);
-                  toast({
-                    className: "bg-green-700",
-                    description: "You liked " + partner.name,
-                  });
-                } catch (error) {
-                  toast({
-                    className: "bg-green-700",
-                    description: "You already liked " + partner.name,
-                  });
-                } finally {
-                  onNext();
-                }
-              }}
-              
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    await likePartner(partner.email);
+                    toast({
+                      className: "bg-green-700",
+                      description: "You liked " + partner.name,
+                    });
+                  } catch (error) {
+                    toast({
+                      className: "bg-green-700",
+                      description: "You already liked " + partner.name,
+                    });
+                  } finally {
+                    onNext();
+                  }
+                }}
+
                 variant={"outline"}
                 className="bg-red-700 hover:bg-red-600 size-12 rounded-full"
               >
