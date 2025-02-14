@@ -6,7 +6,7 @@ import { chatService } from "@/app/service/ChatService"
 import { useSession } from "next-auth/react"
 import { Send } from "lucide-react"
 
-export default function ChatWindow({ partner }: { partner: Partner }) {
+export default function ChatWindow({ partner }: { partner: Partner  }) {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([])
   const [newMessage, setNewMessage] = useState("")
   const { data: session } = useSession()
