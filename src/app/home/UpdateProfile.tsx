@@ -160,12 +160,12 @@ export default function UpdateProfile() {
   }, [session, status, form])
 
   const addItem = (newUrl: string) => {
-    if (newPhotosUrl.length < 3 && newUrl) {
+    if (newPhotosUrl.length + photosUrl.length < 3 && newUrl) {
       setNewPhotosUrl((prevItems) => [...prevItems, newUrl])
-    } else if (newPhotosUrl.length >= 3) {
+    } else if (newPhotosUrl.length + photosUrl.length >= 3) {
       toast({
         title: "Limit reached",
-        description: "You can only upload 3 photos.",
+        description: "You can only have a total of 3 photos.",
         variant: "destructive",
       })
     }
@@ -174,7 +174,8 @@ export default function UpdateProfile() {
   async function onSubmit(values: z.infer<typeof profileSchema>) {
     setDisabledButton(true)
     try {
-      values.photos = newPhotosUrl
+      // Use newPhotosUrl if it's not empty, otherwise use the existing photosUrl
+      values.photos = newPhotosUrl.length > 0 ? newPhotosUrl : photosUrl
       values.interests = interests
       const response = await fetch("/api/users", {
         method: "PUT",
@@ -574,7 +575,7 @@ export default function UpdateProfile() {
                         key={idx}
                         className="h-40 w-40"
                         endpoint="imageUploader"
-                        disabled={newPhotosUrl.length >= 3}
+                        disabled={newPhotosUrl.length + photosUrl.length >= 3}
                         onClientUploadComplete={(res) => {
                           if (res && res[0]?.url) addItem(res[0].url);
                         }}
@@ -593,25 +594,39 @@ export default function UpdateProfile() {
                   {newPhotosUrl.map((url, index) => (
                     <img
                       key={index}
-                      src={url}
+                      src={url || "/placeholder.svg"}
                       alt={`Uploaded photo ${index + 1}`}
                       className="w-full h-32 object-cover rounded"
                     />
+                  ))}
+                </div>
+                <FormLabel>Existing photos</FormLabel>
+                <div className="grid grid-cols-3 gap-2 mt-4">
+                  {photosUrl.map((url, index) => (
+                    <div key={index} className="relative">
+                      <img
+                        src={url || "/placeholder.svg"}
+                        alt={`Uploaded photo ${index + 1}`}
+                        className="w-full h-32 object-cover rounded"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-1 right-1"
+                        onClick={() => {
+                          const updatedPhotos = photosUrl.filter((_, i) => i !== index);
+                          setPhotosUrl(updatedPhotos);
+                          form.setValue("photos", updatedPhotos);
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   ))}
                 </div>
                 <FormDescription>Please upload 3 photos of yourself.</FormDescription>
                 <FormMessage />
-                <FormLabel>old photos</FormLabel>
-                <div className="grid grid-cols-3 gap-2 mt-4">
-                  {photosUrl.map((url, index) => (
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`Uploaded photo ${index + 1}`}
-                      className="w-full h-32 object-cover rounded"
-                    />
-                  ))}
-                </div>
               </FormItem>
             )}
           />
@@ -623,4 +638,3 @@ export default function UpdateProfile() {
     </div>
   )
 }
-

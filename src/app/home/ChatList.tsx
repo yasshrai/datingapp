@@ -63,7 +63,7 @@ const ChatList = () => {
 
   return (
     <div>
-      <ul className="space-y-4">
+      <ul className="space-y-4 overflow-auto max-h-[75vh] md:max-h-[50vh]  custom-scrollbar">
         {chats.map((chat, index) => (
           <li
             key={index}
