@@ -62,7 +62,7 @@ export default function HomePage() {
           <Button variant="ghost" className="text-white" onClick={()=>router.push("/updateprofile")}>
             <User className="mr-2" /> Profile
           </Button>
-          <Button onClick={() => signOut({ redirectTo: "/signup" })}>
+          <Button onClick={() => signOut({ redirectTo: "/login" })}>
             <LogOut className='mr-2' /> Logout
           </Button>
         </nav>
@@ -77,7 +77,7 @@ export default function HomePage() {
               <Button variant="ghost" onClick={()=>router.push("/updateprofile")}>
                 <User className="mr-2" /> Profile
               </Button>
-              <Button onClick={() => signOut({ redirectTo: "/signup" })}>
+              <Button onClick={() => signOut({ redirectTo: "/login" })}>
                 <LogOut className='mr-2' /> Logout
               </Button>
             </nav>
