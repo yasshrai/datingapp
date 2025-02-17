@@ -313,7 +313,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
       <Dialog open={showChatList} onOpenChange={setShowChatList}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Chat with {partner.name}</DialogTitle>
+            <DialogTitle>Chat History</DialogTitle>
           </DialogHeader>
           <ChatList />
           <DialogClose asChild>

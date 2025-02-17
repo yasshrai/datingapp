@@ -20,7 +20,7 @@ export async function fetchPartnerSingle(email: string): Promise<Partner | null>
 
   if (!userDetails) return null
   return {
-    id: userDetails._id,
+    id: userDetails._id?.toString(),
     name: userDetails.name,
     email: userDetails.email,
     age: userDetails.age,
