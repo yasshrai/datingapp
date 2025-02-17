@@ -88,14 +88,14 @@ export default function HomePage() {
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-md mx-auto">
           <div className='flex justify-evenly mb-3'>
-            <div className='w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-lg'>
+            <div className='w-28 h-8 flex items-center justify-center bg-black text-white text-sm rounded-xl'>
               <Button className='bg-transparent' onClick={() => setIsSearchDialogOpen(true)}>
                 <Search className='text-white' fill='black' /><p className='text-sm font-bold'>SEARCH</p>
               </Button>
             </div>
-            <div className='w-28 h-8 flex items-center justify-center bg-pink-500 text-black text-sm rounded-lg'>
+            <div className='w-28 h-8 flex items-center justify-center bg-pink-400 text-black text-sm rounded-xl'>
               <Button variant="ghost" className='w-full' onClick={()=> router.push("/likes")}>
-                <HeartIcon className='text-black' fill='black' /><p className='text-sm font-bold '>Likes</p>
+              <i className="text-lg ri-poker-hearts-fill"></i><p className='text-sm font-bold '>Likes</p>
               </Button>
             </div>
           </div>
