@@ -23,9 +23,9 @@ export default function ChatWindow({ partner }: { partner: Partner  }) {
   }, [session?.user?.email, partner.email])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messagesEndRef])
-
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]); 
+  
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault()
     if (newMessage.trim() && session?.user?.email && partner.email) {
