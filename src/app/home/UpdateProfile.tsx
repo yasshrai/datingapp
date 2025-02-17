@@ -70,7 +70,7 @@ const colleges = [
   "Other",
 ]
 
-const religions = ["hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism", "other"]
+const religions = ["hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism", "Atheist","other"]
 
 export default function UpdateProfile() {
   const router = useRouter()

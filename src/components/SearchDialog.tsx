@@ -23,6 +23,8 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
   const [smokerFilter, setSmokerFilter] = useState('any')
   const [drinkerFilter, setDrinkerFilter] = useState('any')
   const [lookingForFilter, setLookingForFilter] = useState('any')
+  const [religionFilter,setreligionFilter] = useState('any')
+  const religions = ["any","hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism","Atheist", "other"]
   const router = useRouter()
 
   useEffect(() => {
@@ -32,10 +34,11 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
       (collegeFilter === 'all' || partner.college === collegeFilter) &&
       (smokerFilter === 'any' || partner.smoker === smokerFilter) &&
       (drinkerFilter === 'any' || partner.drinker === drinkerFilter) &&
-      (lookingForFilter === 'any' || partner.lookingFor === lookingForFilter)
+      (lookingForFilter === 'any' || partner.lookingFor === lookingForFilter)&&
+      (religionFilter === 'any' || partner.religion === religionFilter )
     )
     setFilteredPartners(filtered)
-  }, [searchTerm, partners, courseFilter, collegeFilter, smokerFilter, drinkerFilter, lookingForFilter])
+  }, [searchTerm, partners, courseFilter, collegeFilter, smokerFilter, drinkerFilter, lookingForFilter,religionFilter])
 
   const uniqueCourses = Array.from(new Set(partners.map((p) => p.course)))
   const uniqueColleges = Array.from(new Set(partners.map((p) => p.college)))
@@ -85,8 +88,8 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="any">Any</SelectItem>
-              <SelectItem value="yes">Yes</SelectItem>
-              <SelectItem value="no">No</SelectItem>
+              <SelectItem value="yes">Smoker</SelectItem>
+              <SelectItem value="no">Non Smoker</SelectItem>
             </SelectContent>
           </Select>
           <Select value={drinkerFilter} onValueChange={setDrinkerFilter}>
@@ -95,8 +98,8 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="any">Any</SelectItem>
-              <SelectItem value="yes">Yes</SelectItem>
-              <SelectItem value="no">No</SelectItem>
+              <SelectItem value="yes">Drinker</SelectItem>
+              <SelectItem value="no">Non Drinker</SelectItem>
             </SelectContent>
           </Select>
           <Select value={lookingForFilter} onValueChange={setLookingForFilter}>
@@ -108,6 +111,15 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
               <SelectItem value="long-term">Long-term</SelectItem>
               <SelectItem value="short-term">Short-term</SelectItem>
               <SelectItem value="friendship">Friendship</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Select value={religionFilter} onValueChange={setreligionFilter}>
+            <SelectTrigger>
+              <SelectValue placeholder="religion" />
+            </SelectTrigger>
+            <SelectContent>
+              {religions.map((religion)=> <SelectItem value={religion}>{religion}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>

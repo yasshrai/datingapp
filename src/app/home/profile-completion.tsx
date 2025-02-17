@@ -58,15 +58,9 @@ const colleges = [
   "prestige university",
   "Other"
 ]
-const religions = [
-  "hinduism",
-  "islam",
-  "jainism",
-  "christianity",
-  "skihism",
-  "buddhism",
-  "other"
-]
+
+const religions = ["hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism","Atheist", "other"]
+
 export default function ProfileCompletion() {
   const router = useRouter()
   const [photosurl, setPhotosUrl1] = useState<string[]>([])
