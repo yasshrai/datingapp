@@ -141,3 +141,4 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
       </DialogContent>
     </Dialog>
   )
+}
