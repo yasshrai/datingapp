@@ -6,11 +6,11 @@ import { chatService } from "@/app/service/ChatService"
 import { useSession } from "next-auth/react"
 import { Send } from "lucide-react"
 
-export default function ChatWindow({ partner }: { partner: Partner  }) {
+export default function ChatWindow({ partner }: { partner: Partner }) {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([])
   const [newMessage, setNewMessage] = useState("")
   const { data: session } = useSession()
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (session?.user?.email && partner.email) {
@@ -23,9 +23,12 @@ export default function ChatWindow({ partner }: { partner: Partner  }) {
   }, [session?.user?.email, partner.email])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]); 
-  
+    const container = messagesContainerRef.current
+    if (container) {
+      container.scrollTop = container.scrollHeight // Instantly sets scroll to bottom without animation
+    }
+  }, [messages]) // Runs when messages change
+
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault()
     if (newMessage.trim() && session?.user?.email && partner.email) {
@@ -36,11 +39,11 @@ export default function ChatWindow({ partner }: { partner: Partner  }) {
 
   return (
     <div className="w-full flex flex-col h-[600px] rounded-lg shadow-lg">
-      <div className="w-full flex flex-row gap-3  p-4 border-b border-zinc-800">
-        <img src={partner.photos[0]} className="size-10 rounded-xl"></img>
+      <div className="w-full flex flex-row gap-3 p-4 border-b border-zinc-800">
+        <img src={partner.photos[0]} className="size-10 rounded-xl" alt={partner.name} />
         <h2 className="text-xl font-semibold text-zinc-100">{partner.name}</h2>
       </div>
-      <div className="w-full flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+      <div ref={messagesContainerRef} className="w-full flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -58,7 +61,6 @@ export default function ChatWindow({ partner }: { partner: Partner  }) {
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} />
       </div>
       <form onSubmit={sendMessage} className="flex">
         <Input
@@ -76,4 +78,3 @@ export default function ChatWindow({ partner }: { partner: Partner  }) {
     </div>
   )
 }
-
