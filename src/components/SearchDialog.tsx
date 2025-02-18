@@ -119,7 +119,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
               <SelectValue placeholder="religion" />
             </SelectTrigger>
             <SelectContent>
-              {religions.map((religion)=> <SelectItem value={religion}>{religion}</SelectItem>)}
+              {religions.map((religion)=> <SelectItem key={religion} value={religion}>{religion}</SelectItem>)}
             </SelectContent>
           </Select>
         </div>
