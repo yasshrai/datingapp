@@ -24,13 +24,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { confessionService } from "@/app/service/ConfessionService"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
+import ChatList from "./ChatList"
 
 
 export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  const [showChatWindow, setShowChatWindow] = useState(false)
+  const [showChatWindow, setShowChatWindow] = useState(false);
+  const [showChatList,setShowChatList] = useState(false);
   const [showConfessionWindow, setShowConfessionWindow] = useState(false)
   const [confessionMessage, setConfessionMessage] = useState("")
   const [confessionName, setConfessionName] = useState("")
@@ -70,9 +72,9 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
           subtitle: `${partner.course} - ${partner.college}, Year ${partner.year}`,
         }
       case 1:
-        return { title: "Description", subtitle: partner.description }
+        return { name: partner.name, title: "Description", subtitle: partner.description }
       case 2:
-        return { title: "Interests", subtitle: partner.interests.join(", ") }
+        return { name: partner.name, title: "Interests", subtitle: partner.interests.join(", ") }
       default:
         return { title: "", subtitle: "" }
     }
@@ -162,6 +164,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 p-4 pb-16 bg-gradient-to-t from-black/70 to-transparent">
+              <h2 className="text-lg font-bold text-white">{currentDetails.name}</h2>
               <h3 className="text-2xl font-semibold text-white pb-4">{currentDetails.title}</h3>
               <p className="text-sm text-white/80">{currentDetails.subtitle}</p>
             </div>
@@ -176,21 +179,23 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               </button>
               <Button
                 onClick={async (e) => {
-                  e.stopPropagation()
+                  e.stopPropagation();
                   try {
-                    await likePartner(partner.email)
+                    await likePartner(partner.email);
                     toast({
                       className: "bg-green-700",
-                      description: "you liked " + partner.name,
-                    })
-                    onNext()
+                      description: "You liked " + partner.name,
+                    });
                   } catch (error) {
                     toast({
-                      className: "bg-red-700",
-                      description: "you already liked " + partner.name,
-                    })
+                      className: "bg-green-700",
+                      description: "You already liked " + partner.name,
+                    });
+                  } finally {
+                    onNext();
                   }
                 }}
+
                 variant={"outline"}
                 className="bg-red-600  hover:bg-red-700 size-12 rounded-full"
               >
@@ -208,7 +213,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         <Button
           className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 "
           variant={"outline"}
-          onClick={() => setShowChatWindow(true)}
+          onClick={() => setShowChatList(true)}
         >
           <MessageCircle className="h-6 w-6" />
         </Button>
@@ -297,6 +302,20 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             <DialogTitle>Chat with {partner.name}</DialogTitle>
           </DialogHeader>
           <ChatWindow partner={partner} />
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showChatList} onOpenChange={setShowChatList}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Chat History</DialogTitle>
+          </DialogHeader>
+          <ChatList />
           <DialogClose asChild>
             <Button type="button" variant="secondary">
               Close
