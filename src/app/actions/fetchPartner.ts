@@ -39,3 +39,31 @@ export async function fetchPartnerSingle(email: string): Promise<Partner | null>
     photos: userDetails.photos,
   }
 }
+export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] | null> {
+  await dbConnect();
+  let decodedEmails: string[] = emails.map((email) => decodeURIComponent(email));
+
+  const userDetails = await User.find({ email: { $in: decodedEmails } });
+
+  if (!userDetails || userDetails.length === 0) return null;
+
+  return userDetails.map((user) => ({
+    id: user._id?.toString(),
+    name: user.name,
+    email: user.email,
+    age: user.age,
+    course: user.course,
+    college: user.college,
+    year: user.year,
+    bio: user.bio,
+    description: user.description,
+    religion: user.religion,
+    diet: user.diet,
+    lookingFor: user.lookingFor,
+    smoker: user.smoker,
+    drinker: user.drinker,
+    communicationPreference: user.communicationPreference,
+    interests: user.interests,
+    photos: user.photos,
+  }));
+}

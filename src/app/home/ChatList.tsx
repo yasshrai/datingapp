@@ -5,7 +5,7 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { chatService } from "@/app/service/ChatService"
 import { useSession } from "next-auth/react"
-import { fetchPartnerSingle } from "../actions/fetchPartner"
+import { fetchPartnerMultiple } from "../actions/fetchPartner"
 import type { Partner } from "@/types/partner"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import ChatWindow from "./Chatwindow"
@@ -33,36 +33,29 @@ const ChatList = () => {
     const fetchChatsAndPartners = async () => {
       if (userEmail) {
         try {
-          const data = await chatService.getUserChats(userEmail)
-          const chatList = Object.values(data || {})
-          setChats(chatList)
-          setFilteredChats(chatList)
-
-          const partnerDetails = await Promise.all(
-            chatList.map(async (chat) => {
-              const partner = await fetchPartnerSingle(chat.partner)
-              return { email: chat.partner, details: partner }
-            }),
-          )
-
-          const partnerMap = partnerDetails.reduce(
-            (acc, { email, details }) => {
-              acc[email] = details
-              return acc
+          const data = await chatService.getUserChats(userEmail);
+          const chatList = Object.values(data || {});
+          setChats(chatList);
+          setFilteredChats(chatList);
+          const partnerEmails = [...new Set(chatList.map((chat) => chat.partner))];
+          const partners = await fetchPartnerMultiple(partnerEmails);
+          const partnerMap = (partners || []).reduce(
+            (acc, partner) => {
+              if (partner) acc[partner.email] = partner;
+              return acc;
             },
-            {} as { [key: string]: Partner | null },
-          )
-
-          setPartners(partnerMap)
+            {} as { [key: string]: Partner | null }
+          );
+  
+          setPartners(partnerMap);
         } catch (error) {
-          console.error("Error fetching chats and partners:", error)
+          console.error("Error fetching chats and partners:", error);
         }
       }
-    }
-
-    fetchChatsAndPartners()
-  }, [userEmail])
-
+    };
+    fetchChatsAndPartners();
+  }, [userEmail]);
+  
   useEffect(() => {
     const filtered = chats.filter(
       (chat) =>
