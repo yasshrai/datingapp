@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react"
+import 'remixicon/fonts/remixicon.css'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

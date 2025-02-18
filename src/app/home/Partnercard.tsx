@@ -197,9 +197,9 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
                 }}
 
                 variant={"outline"}
-                className="bg-red-700 hover:bg-red-600 size-12 rounded-full"
+                className="bg-red-600  hover:bg-red-700 size-12 rounded-full"
               >
-                <ThumbsUp className="w-6 h-6" />
+                <i className="ri-poker-hearts-fill text-lg"></i>
               </Button>
             </div>
           </div>

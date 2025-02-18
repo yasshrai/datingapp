@@ -27,4 +27,3 @@ export const confessionService = {
     return () => off(confessionsRef)
   },
 }
-
