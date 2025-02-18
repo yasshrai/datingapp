@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation'
 import Usercard from './UserCard';
-import { fetchPartner } from "@/app/actions/fetchPartner";
+import { fetchPartnerSingle } from "@/app/actions/fetchPartner";
 import { useState, useEffect } from 'react';
 
 export default function PartnerPage() {
@@ -14,7 +14,7 @@ export default function PartnerPage() {
     useEffect(() => {
         async function fetchPartnerData() {
             try {
-                const data = await fetchPartner(email);
+                const data = await fetchPartnerSingle(email);
                 setUserdata(data);
             } catch (error) {
                 console.error("Failed to fetch user data:", error);
