@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { confessionService, type Confession } from "@/app/service/ConfessionService"
-import { HeartIcon, LaughIcon, Frown } from "lucide-react"
+
 
 export default function ConfessionWall() {
   const [confessions, setConfessions] = useState<Confession[]>([])
-  const [reactions, setReactions] = useState<Record<number, string>>({})
   const [liked, setLiked] = useState<Record<number, boolean>>({});
   const [likes, setLikes] = useState<Record<number, number>>({});
 
@@ -16,9 +15,7 @@ export default function ConfessionWall() {
     return () => unsubscribe()
   }, [])
 
-  const handleReaction = (index: number, emoji: string) => {
-    setReactions((prev) => ({ ...prev, [index]: emoji }))
-  }
+ 
     const toggleLike = (index: number) => {
   setLiked((prev) => ({ ...prev, [index]: !prev[index] }));
     setLikes((prev) => ({
