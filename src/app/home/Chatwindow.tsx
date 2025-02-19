@@ -50,7 +50,7 @@ export default function ChatWindow({ partner }: { partner: Partner }) {
             className={`chat ${message.sender === session?.user?.email ? "chat-end" : "chat-start"}`}
           >
             <div
-              className={`chat-bubble  neutral-content z-3 rounded-lg ${
+              className={`chat-bubble  z-3 rounded-lg ${
                 message.sender === session?.user?.email ? "bg-black text-zinc-100" : "bg-neutral-200 text-black"
               }`}
             >
