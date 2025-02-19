@@ -11,7 +11,7 @@ export default function Usercard({ userdata }: UsercardProps) {
     }
 
     return (
-        <div>
+        <div className="min-h-screen bg-stone-950">
             <PartnerCardSingle partner={userdata} />
         </div>
     );
