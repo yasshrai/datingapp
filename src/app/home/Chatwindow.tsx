@@ -1,41 +1,41 @@
-import { useState, useEffect, useRef } from "react"
-import type { Partner } from "@/types/partner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { chatService } from "@/app/service/ChatService"
-import { useSession } from "next-auth/react"
-import { Send } from "lucide-react"
+import { useState, useEffect, useRef } from "react";
+import type { Partner } from "@/types/partner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { chatService } from "@/app/service/ChatService";
+import { useSession } from "next-auth/react";
+import { Send } from "lucide-react";
 
 export default function ChatWindow({ partner }: { partner: Partner }) {
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([])
-  const [newMessage, setNewMessage] = useState("")
-  const { data: session } = useSession()
-  const messagesContainerRef = useRef<HTMLDivElement>(null)
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const { data: session } = useSession();
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (session?.user?.email && partner.email) {
       const unsubscribe = chatService.subscribeToChat(session.user.email, partner.email, (updatedMessages) => {
-        setMessages(updatedMessages)
-      })
+        setMessages(updatedMessages);
+      });
 
-      return () => unsubscribe()
+      return () => unsubscribe();
     }
-  }, [session?.user?.email, partner.email])
+  }, [session?.user?.email, partner.email]);
 
   useEffect(() => {
-    const container = messagesContainerRef.current
+    const container = messagesContainerRef.current;
     if (container) {
-      container.scrollTop = container.scrollHeight // Instantly sets scroll to bottom without animation
+      container.scrollTop = container.scrollHeight; // Instantly sets scroll to bottom without animation
     }
-  }, [messages]) // Runs when messages change
+  }, [messages]);
 
   const sendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (newMessage.trim() && session?.user?.email && partner.email) {
-      chatService.sendMessage(session.user.email, partner.email, { sender: session.user.email, text: newMessage })
-      setNewMessage("")
+      chatService.sendMessage(session.user.email, partner.email, { sender: session.user.email, text: newMessage });
+      setNewMessage("");
     }
-  }
+  };
 
   return (
     <div className="w-full flex flex-col min-h-[70vh] max-h-[70vh] md:max-h-[50vh] rounded-lg shadow-lg">
@@ -47,11 +47,11 @@ export default function ChatWindow({ partner }: { partner: Partner }) {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`flex ${message.sender === session?.user?.email ? "justify-end" : "justify-start"}`}
+            className={`chat ${message.sender === session?.user?.email ? "chat-end" : "chat-start"}`}
           >
             <div
-              className={`max-w-[70%] p-3 rounded-lg ${
-                message.sender === session?.user?.email ? "bg-zinc-800 text-zinc-100" : "bg-zinc-900 text-zinc-200"
+              className={`chat-bubble  neutral-content z-3 rounded-lg ${
+                message.sender === session?.user?.email ? "bg-black text-zinc-100" : "bg-neutral-200 text-black"
               }`}
             >
               <p className="text-sm font-semibold mb-1 text-zinc-400">
@@ -76,5 +76,5 @@ export default function ChatWindow({ partner }: { partner: Partner }) {
         </Button>
       </form>
     </div>
-  )
+  );
 }
