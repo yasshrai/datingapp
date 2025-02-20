@@ -119,7 +119,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
               <SelectValue placeholder="Hobby" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Hobbies</SelectItem>
+              <SelectItem value="all">Hobbies</SelectItem>
               {uniqueHobbies.map((hobby) => (
                 <SelectItem key={hobby} value={hobby}>{hobby}</SelectItem>
               ))}
