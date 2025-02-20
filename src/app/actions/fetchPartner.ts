@@ -37,6 +37,8 @@ export async function fetchPartnerSingle(email: string): Promise<Partner | null>
     communicationPreference: userDetails.communicationPreference,
     interests: userDetails.interests,
     photos: userDetails.photos,
+    hobby:userDetails.hobby,
+    gender:userDetails.gender
   }
 }
 export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] | null> {
@@ -65,5 +67,7 @@ export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] 
     communicationPreference: user.communicationPreference,
     interests: user.interests,
     photos: user.photos,
+    hobby:user.hobby,
+    gender:user.gender
   }));
 }
