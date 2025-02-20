@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -12,19 +12,28 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/hooks/use-toast"
-import { UploadButton } from "@/utils/uploadthing";
-import { useSession } from 'next-auth/react'
+import { UploadButton } from "@/utils/uploadthing"
+import { useSession } from "next-auth/react"
 
 const profileSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  age: z.number().min(18, { message: "You must be at least 18 years old." }).max(100, { message: "Age must be less than 100." }),
+  age: z
+    .number()
+    .min(18, { message: "You must be at least 18 years old." })
+    .max(100, { message: "Age must be less than 100." }),
   course: z.string().min(2, { message: "Course is required." }),
   college: z.string().min(2, { message: "College is required." }),
   email: z.string().email(),
   year: z.string().min(1, { message: "Year is required" }),
   religion: z.string().min(2, { message: "Religion is required" }),
-  bio: z.string().min(4, { message: "Bio must be at least 4 characters." }).max(20, { message: "Bio must be less than 20 characters." }),
-  description: z.string().min(10, { message: "Description must be at least 10 characters." }).max(1000, { message: "Description must be less than 1000 characters." }),
+  bio: z
+    .string()
+    .min(4, { message: "Bio must be at least 4 characters." })
+    .max(20, { message: "Bio must be less than 20 characters." }),
+  description: z
+    .string()
+    .min(10, { message: "Description must be at least 10 characters." })
+    .max(1000, { message: "Description must be less than 1000 characters." }),
   diet: z.enum(["vegetarian", "non-vegetarian"]),
   lookingFor: z.enum(["long-term", "short-term", "friendship"]),
   smoker: z.enum(["yes", "no"]),
@@ -32,6 +41,8 @@ const profileSchema = z.object({
   communicationPreference: z.enum(["calling", "messaging"]),
   photos: z.array(z.string()),
   interests: z.array(z.string()),
+  gender: z.enum(["male", "female", "other"]),
+  hobby: z.string().min(2, { message: "Hobby is required." }),
 })
 const courses = [
   "BCA",
@@ -47,8 +58,7 @@ const courses = [
   "Mtech",
   "MALLB",
   "MCOMLLB",
-  "Other"
-
+  "Other",
 ]
 const colleges = [
   "renaissnace university",
@@ -56,10 +66,10 @@ const colleges = [
   "medicaps university",
   "Malwa Institute of Technology",
   "prestige university",
-  "Other"
+  "Other",
 ]
 
-const religions = ["hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism","Atheist", "other"]
+const religions = ["hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism", "Atheist", "other"]
 
 export default function ProfileCompletion() {
   const router = useRouter()
@@ -67,20 +77,19 @@ export default function ProfileCompletion() {
   const [interests, setInterests] = useState<string[]>([])
   const [newInterest, setNewInterest] = useState("")
   const { data: session, status } = useSession()
-  const [disabledButton,setDisabledButton] = useState<boolean>(false)
-
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
   const addItem = (newUrl: string) => {
     if (photosurl.length < 3 && newUrl) {
-      setPhotosUrl1((prevItems) => [...prevItems, newUrl]);
+      setPhotosUrl1((prevItems) => [...prevItems, newUrl])
     } else if (photosurl.length >= 3) {
       toast({
         title: "Limit reached",
         description: "You can only upload 3 photos.",
         variant: "destructive",
-      });
+      })
     }
-  };
+  }
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -99,6 +108,8 @@ export default function ProfileCompletion() {
       drinker: "no",
       communicationPreference: "messaging",
       photos: [],
+      gender: "male",
+      hobby: "",
     },
   })
   async function onSubmit(values: z.infer<typeof profileSchema>) {
@@ -109,56 +120,56 @@ export default function ProfileCompletion() {
           title: "Incomplete",
           description: "Please upload exactly 3 photos before submitting.",
           variant: "destructive",
-        });
-        return;
+        })
+        return
       }
-      values.photos = photosurl;
-      const response = await fetch('/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      values.photos = photosurl
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
-      });
+      })
 
-      if (!response.ok) throw new Error('Failed to create profile');
-      const response2 = await fetch('/api/completeprofile', {
-        method: 'POST',
+      if (!response.ok) throw new Error("Failed to create profile")
+      const response2 = await fetch("/api/completeprofile", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: values.email,
         }),
       })
-      if (!response2.ok) throw new Error('Failed to create profile');
+      if (!response2.ok) throw new Error("Failed to create profile")
       toast({
         title: "Profile completed",
         description: "Your profile has been successfully created.",
-      });
+      })
       form.reset()
       setPhotosUrl1([])
       setInterests([])
-      router.push('/home');
+      router.push("/home")
     } catch (error) {
       toast({
         title: "Error",
         description: "There was a problem completing your profile. Please try again.",
         variant: "destructive",
-      });
+      })
     }
     setDisabledButton(false)
   }
   const addInterest = () => {
     if (newInterest && !interests.includes(newInterest)) {
       setInterests([...interests, newInterest])
-      form.setValue('interests', [...interests, newInterest])
+      form.setValue("interests", [...interests, newInterest])
       setNewInterest("")
     }
   }
 
   const removeInterest = (interest: string) => {
-    const updatedInterests = interests.filter(i => i !== interest)
+    const updatedInterests = interests.filter((i) => i !== interest)
     setInterests(updatedInterests)
-    form.setValue('interests', updatedInterests)
+    form.setValue("interests", updatedInterests)
   }
 
   return (
@@ -186,11 +197,48 @@ export default function ProfileCompletion() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...form.register("email")} // Still register for submission
+                  <Input
+                    {...form.register("email")} // Still register for submission
                     readOnly // Make it read-only
-                    value={session?.user?.email || ""} />
+                    value={session?.user?.email || ""}
+                  />
                 </FormControl>
                 <FormDescription>This is your email address associated with your account.</FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="hobby"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Hobby</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your hobby" {...field} />
+                </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -201,7 +249,7 @@ export default function ProfileCompletion() {
               <FormItem>
                 <FormLabel>Age</FormLabel>
                 <FormControl>
-                  <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value))} />
+                  <Input type="number" {...field} onChange={(e) => field.onChange(Number.parseInt(e.target.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -286,7 +334,6 @@ export default function ProfileCompletion() {
               <FormItem>
                 <FormLabel>Religion</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="select your religion" />
@@ -313,9 +360,7 @@ export default function ProfileCompletion() {
                 <FormControl>
                   <Textarea placeholder="A short bio about yourself" {...field} />
                 </FormControl>
-                <FormDescription>
-                  Write your Bio (max 20 characters).
-                </FormDescription>
+                <FormDescription>Write your Bio (max 20 characters).</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -330,7 +375,8 @@ export default function ProfileCompletion() {
                   <Textarea placeholder="Describe yourself in detail" {...field} />
                 </FormControl>
                 <FormDescription>
-                  A more detailed description about yourself, your interests, and what you're looking for (max 1000 characters).
+                  A more detailed description about yourself, your interests, and what you're looking for (max 1000
+                  characters).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -395,17 +441,13 @@ export default function ProfileCompletion() {
                       <FormControl>
                         <RadioGroupItem value="yes" />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Yes
-                      </FormLabel>
+                      <FormLabel className="font-normal">Yes</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
                         <RadioGroupItem value="no" />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        No
-                      </FormLabel>
+                      <FormLabel className="font-normal">No</FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
@@ -429,17 +471,13 @@ export default function ProfileCompletion() {
                       <FormControl>
                         <RadioGroupItem value="yes" />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Yes
-                      </FormLabel>
+                      <FormLabel className="font-normal">Yes</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
                         <RadioGroupItem value="no" />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        No
-                      </FormLabel>
+                      <FormLabel className="font-normal">No</FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
@@ -455,11 +493,16 @@ export default function ProfileCompletion() {
                 onChange={(e) => setNewInterest(e.target.value)}
                 placeholder="Add an interest"
               />
-              <Button type="button" onClick={addInterest}>Add</Button>
+              <Button type="button" onClick={addInterest}>
+                Add
+              </Button>
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
               {interests.map((interest, index) => (
-                <div key={index} className="bg-secondary text-secondary-foreground px-2 py-1 rounded-md flex items-center">
+                <div
+                  key={index}
+                  className="bg-secondary text-secondary-foreground px-2 py-1 rounded-md flex items-center"
+                >
                   {interest}
                   <Button
                     type="button"
@@ -510,14 +553,14 @@ export default function ProfileCompletion() {
                         endpoint="imageUploader"
                         disabled={photosurl.length >= 3}
                         onClientUploadComplete={(res) => {
-                          if (res && res[0]?.url) addItem(res[0].url);
+                          if (res && res[0]?.url) addItem(res[0].url)
                         }}
                         onUploadError={(error) => {
                           toast({
                             title: "Upload Error",
                             description: error.message,
                             variant: "destructive",
-                          });
+                          })
                         }}
                       />
                     ))}
@@ -527,7 +570,7 @@ export default function ProfileCompletion() {
                   {photosurl.map((url, index) => (
                     <img
                       key={index}
-                      src={url}
+                      src={url || "/placeholder.svg"}
                       alt={`Uploaded photo ${index + 1}`}
                       className="w-full h-32 object-cover rounded"
                     />
@@ -538,7 +581,9 @@ export default function ProfileCompletion() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={disabledButton} >Complete Profile</Button>
+          <Button type="submit" disabled={disabledButton}>
+            Complete Profile
+          </Button>
         </form>
       </Form>
     </div>

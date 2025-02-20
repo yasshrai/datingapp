@@ -25,6 +25,8 @@ const profileSchema = z.object({
   course: z.string().min(2, { message: "Course is required." }),
   college: z.string().min(2, { message: "College is required." }),
   email: z.string().email(),
+  gender: z.enum(["male", "female", "other"]),
+  hobby: z.string().min(2, { message: "Hobby is required." }),
   year: z.number().min(1, { message: "Year is required" }).max(10, { message: "Year must be 10 or less" }),
   religion: z.string().min(2, { message: "Religion is required" }),
   bio: z
@@ -70,12 +72,12 @@ const colleges = [
   "Other",
 ]
 
-const religions = ["hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism", "Atheist","other"]
+const religions = ["hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism", "Atheist", "other"]
 
 export default function UpdateProfile() {
   const router = useRouter()
   const [photosUrl, setPhotosUrl] = useState<string[]>([])
-  const [newPhotosUrl,setNewPhotosUrl] = useState<string[]>([])
+  const [newPhotosUrl, setNewPhotosUrl] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const [newInterest, setNewInterest] = useState("")
   const { data: session, status } = useSession()
@@ -87,6 +89,8 @@ export default function UpdateProfile() {
       name: "",
       age: 18,
       email: "",
+      gender: "male",
+      hobby: "",
       course: "",
       college: "",
       year: 1,
@@ -123,6 +127,8 @@ export default function UpdateProfile() {
             name: user.name || "",
             age: user.age || 18,
             email: user.email || "",
+            gender: user.gender || "male",
+            hobby: user.hobby || "",
             course: user.course || "",
             college: user.college || "",
             year: user.year || 1,
@@ -258,6 +264,41 @@ export default function UpdateProfile() {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input type="email" placeholder="Your email" {...field} disabled />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="hobby"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Hobby</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your hobby" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -543,11 +584,16 @@ export default function UpdateProfile() {
                 onChange={(e) => setNewInterest(e.target.value)}
                 placeholder="Add an interest"
               />
-              <Button type="button" onClick={addInterest}>Add</Button>
+              <Button type="button" onClick={addInterest}>
+                Add
+              </Button>
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
               {interests.map((interest, index) => (
-                <div key={index} className="bg-secondary text-secondary-foreground px-2 py-1 rounded-md flex items-center">
+                <div
+                  key={index}
+                  className="bg-secondary text-secondary-foreground px-2 py-1 rounded-md flex items-center"
+                >
                   {interest}
                   <Button
                     type="button"
@@ -577,14 +623,14 @@ export default function UpdateProfile() {
                         endpoint="imageUploader"
                         disabled={newPhotosUrl.length + photosUrl.length >= 3}
                         onClientUploadComplete={(res) => {
-                          if (res && res[0]?.url) addItem(res[0].url);
+                          if (res && res[0]?.url) addItem(res[0].url)
                         }}
                         onUploadError={(error) => {
                           toast({
                             title: "Upload Error",
                             description: error.message,
                             variant: "destructive",
-                          });
+                          })
                         }}
                       />
                     ))}
@@ -615,9 +661,9 @@ export default function UpdateProfile() {
                         size="sm"
                         className="absolute top-1 right-1"
                         onClick={() => {
-                          const updatedPhotos = photosUrl.filter((_, i) => i !== index);
-                          setPhotosUrl(updatedPhotos);
-                          form.setValue("photos", updatedPhotos);
+                          const updatedPhotos = photosUrl.filter((_, i) => i !== index)
+                          setPhotosUrl(updatedPhotos)
+                          form.setValue("photos", updatedPhotos)
                         }}
                       >
                         Remove
@@ -638,3 +684,4 @@ export default function UpdateProfile() {
     </div>
   )
 }
+

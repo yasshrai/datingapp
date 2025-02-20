@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    gender:{type:String,required:true},
     email:{type:String,required:true},
     age: { type: Number, required: true },
     course: { type: String, required: true },
@@ -16,6 +17,7 @@ const UserSchema = new mongoose.Schema({
     drinker: { type: String, enum: ['yes', 'no'], required: true },
     communicationPreference: { type: String, enum: ['calling', 'messaging'], required: true },
     interests: [{ type: String }],
+    hobby:{type:String,required:true},
     photos: [{ type: String }]
 }, {
     timestamps: true
