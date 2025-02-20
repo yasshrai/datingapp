@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
     const alreadyLiked = await Like.findOne({liker,likerEmail,likedEmail});
     if (alreadyLiked){
-      return NextResponse.json({error:"already liked"},{status:500})
+      return NextResponse.json({message:"already liked"},{status:201})
     }
     const newLike = new Like({
       liker,

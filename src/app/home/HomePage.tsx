@@ -106,7 +106,6 @@ export default function HomePage() {
                 partner={partners[currentPartnerIndex]}
                 onNext={nextPartner}
                 onPrev={prevPartner}
-                direction={direction}
               />
             )}
           </AnimatePresence>

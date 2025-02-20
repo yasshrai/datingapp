@@ -20,7 +20,7 @@ export async function likePartner( email: String) {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to like partner')
+    console.log("error in likeing partner")
   }
 
   return response.json()

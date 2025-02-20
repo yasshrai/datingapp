@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,9 +12,8 @@ import {
   DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { motion, AnimatePresence } from "framer-motion"
 import { useSwipeable } from "react-swipeable"
-import { MessageCircle, ThumbsUp, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight, Send } from "lucide-react"
+import { MessageCircle, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
@@ -25,43 +26,45 @@ import { confessionService } from "@/app/service/ConfessionService"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import ChatList from "./ChatList"
+import Image from "next/image"
 
-
-export default function PartnerCard({ partner, onNext, onPrev, direction }: { partner: Partner, onNext: () => void, onPrev: () => void, direction: 'left' | 'right' | null }) {
+export default function PartnerCard({
+  partner,
+  onNext,
+  onPrev,
+}: {
+  partner: Partner
+  onNext: () => void
+  onPrev: () => void
+}) {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  const [showChatWindow, setShowChatWindow] = useState(false);
-  const [showChatList,setShowChatList] = useState(false);
+  const [showChatWindow, setShowChatWindow] = useState(false)
+  const [showChatList, setShowChatList] = useState(false)
   const [showConfessionWindow, setShowConfessionWindow] = useState(false)
   const [confessionMessage, setConfessionMessage] = useState("")
   const [confessionName, setConfessionName] = useState("")
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
 
   const handlers = useSwipeable({
-    onSwipedLeft: () => onNext(),
-    onSwipedRight: () => onPrev(),
+    onSwipedLeft: () => !isTransitioning && handleNext(),
+    onSwipedRight: () => !isTransitioning && handlePrev(),
     trackMouse: true,
   })
 
-  const variants = {
-    enter: (direction: "left" | "right") => {
-      return {
-        x: direction === "right" ? -300 : 300,
-        opacity: 0,
-      }
-    },
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: "left" | "right") => {
-      return {
-        x: direction === "right" ? 300 : -300,
-        opacity: 0,
-      }
-    },
+  const handleNext = () => {
+    setIsTransitioning(true)
+    onNext()
+    setTimeout(() => setIsTransitioning(false), 300)
+  }
+
+  const handlePrev = () => {
+    setIsTransitioning(true)
+    onPrev()
+    setTimeout(() => setIsTransitioning(false), 300)
   }
 
   const currentDetails = (() => {
@@ -106,14 +109,8 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
 
   return (
     <>
-      <motion.div
-        key={partner.id}
-        custom={direction}
-        variants={variants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        transition={{ type: "tween", duration: 0.3 }}
+      <div
+        className={`transition-transform duration-300 ${isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
       >
         <Card className="relative">
           <CardContent
@@ -126,18 +123,17 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               }
             }}
           >
-            <AnimatePresence initial={false} custom={direction}>
-              <motion.img
-                key={currentPhotoIndex}
-                src={partner.photos[currentPhotoIndex]}
+            <div className="relative w-full h-full">
+              <Image
+                src={partner.photos[currentPhotoIndex] || "/placeholder.svg"}
                 alt={`${partner.name}'s photo ${currentPhotoIndex + 1}`}
-                className="absolute inset-0 w-full h-full object-cover"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                width={400}
+                height={600}
+                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                priority
               />
-            </AnimatePresence>
+            </div>
+
             <div className="absolute top-4 left-4 right-4 flex justify-between">
               <Button
                 variant="ghost"
@@ -169,57 +165,62 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
               <p className="text-sm text-white/80">{currentDetails.subtitle}</p>
             </div>
           </CardContent>
+
           <div className="absolute -bottom-6 left-0 right-0 flex justify-center z-10">
-            <div className='flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg'>
-              <Button onClick={onPrev} variant={'outline'} className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2">
+            <div className="flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg">
+              <Button
+                onClick={handlePrev}
+                variant="outline"
+                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2"
+              >
                 <X className="w-6 h-6" />
               </Button>
-              <button onClick={() => setShowChatWindow(true)} >
+              <button onClick={() => setShowChatWindow(true)}>
                 <LoveMessageButton />
               </button>
               <Button
                 onClick={async (e) => {
-                  e.stopPropagation();
+                  e.stopPropagation()
                   try {
-                    await likePartner(partner.email);
+                    await likePartner(partner.email)
                     toast({
                       className: "bg-green-700",
                       description: "You liked " + partner.name,
-                    });
+                    })
                   } catch (error) {
                     toast({
                       className: "bg-green-700",
                       description: "You already liked " + partner.name,
-                    });
+                    })
                   } finally {
-                    onNext();
+                    handleNext()
                   }
                 }}
-
-                variant={"outline"}
-                className="bg-red-600  hover:bg-red-700 size-12 rounded-full"
+                variant="outline"
+                className="bg-red-600 hover:bg-red-700 size-12 rounded-full"
               >
                 <i className="ri-poker-hearts-fill text-lg"></i>
               </Button>
             </div>
           </div>
         </Card>
-      </motion.div>
+      </div>
+
       <div className="flex justify-self-center mt-6 gap-1">
-        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32 outline outline-1 " variant={"outline"}>
+        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32 outline outline-1" variant="outline">
           <PersonStandingIcon className="h-6 w-6" />
           <p>people</p>
         </Button>
         <Button
-          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1 "
-          variant={"outline"}
+          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1"
+          variant="outline"
           onClick={() => setShowChatList(true)}
         >
           <MessageCircle className="h-6 w-6" />
         </Button>
         <Button
-          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32  outline outline-1 "
-          variant={"outline"}
+          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32 outline outline-1"
+          variant="outline"
           onClick={() => setShowConfessionWindow(true)}
         >
           <Activity className="h-6 w-6" />
@@ -227,7 +228,7 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         </Button>
       </div>
 
-      {/* Dialog for details */}
+      {/* Dialogs */}
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -278,7 +279,6 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         </DialogContent>
       </Dialog>
 
-      {/* Dialog for full-size image */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="sm:max-w-[90vw] sm:max-h-[90vh] p-0">
           <div className="relative w-full h-full">
@@ -295,7 +295,6 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
         </DialogContent>
       </Dialog>
 
-      {/* Chat Window Dialog */}
       <Dialog open={showChatWindow} onOpenChange={setShowChatWindow}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -361,7 +360,6 @@ export default function PartnerCard({ partner, onNext, onPrev, direction }: { pa
             </Button>
           </DialogClose>
         </DialogContent>
-
       </Dialog>
     </>
   )
