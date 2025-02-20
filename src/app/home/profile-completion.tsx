@@ -42,7 +42,11 @@ const profileSchema = z.object({
   photos: z.array(z.string()),
   interests: z.array(z.string()),
   gender: z.enum(["male", "female", "other"]),
-  hobby: z.string().min(2, { message: "Hobby is required." }),
+  hobby: z.string()
+    .min(2, { message: "Hobby is required." })
+    .max(15, { message: "Hobby must be at most 15 characters." })
+    .regex(/^\w+$/, { message: "Hobby must be a single word." }),
+
 })
 const courses = [
   "BCA",

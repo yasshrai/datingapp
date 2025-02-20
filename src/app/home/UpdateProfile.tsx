@@ -26,7 +26,11 @@ const profileSchema = z.object({
   college: z.string().min(2, { message: "College is required." }),
   email: z.string().email(),
   gender: z.enum(["male", "female", "other"]),
-  hobby: z.string().min(2, { message: "Hobby is required." }),
+  hobby: z.string()
+    .min(2, { message: "Hobby is required." })
+    .max(15, { message: "Hobby must be at most 15 characters." })
+    .regex(/^\w+$/, { message: "Hobby must be a single word." }),
+
   year: z.number().min(1, { message: "Year is required" }).max(10, { message: "Year must be 10 or less" }),
   religion: z.string().min(2, { message: "Religion is required" }),
   bio: z

@@ -16,4 +16,6 @@ export interface Partner {
     communicationPreference: 'calling' | 'messaging'
     interests: string[]
     photos: string[]
+    hobby:string
+    gender:string
 }

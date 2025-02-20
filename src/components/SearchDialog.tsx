@@ -23,8 +23,8 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
   const [smokerFilter, setSmokerFilter] = useState('any')
   const [drinkerFilter, setDrinkerFilter] = useState('any')
   const [lookingForFilter, setLookingForFilter] = useState('any')
-  const [religionFilter,setreligionFilter] = useState('any')
-  const religions = ["any","hinduism", "islam", "jainism", "christianity", "sikhism", "buddhism","Atheist", "other"]
+  const [hobbyFilter, setHobbyFilter] = useState('all')
+  
   const router = useRouter()
 
   useEffect(() => {
@@ -34,14 +34,15 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
       (collegeFilter === 'all' || partner.college === collegeFilter) &&
       (smokerFilter === 'any' || partner.smoker === smokerFilter) &&
       (drinkerFilter === 'any' || partner.drinker === drinkerFilter) &&
-      (lookingForFilter === 'any' || partner.lookingFor === lookingForFilter)&&
-      (religionFilter === 'any' || partner.religion === religionFilter )
+      (lookingForFilter === 'any' || partner.lookingFor === lookingForFilter) &&
+      (hobbyFilter === 'all' || partner.hobby === hobbyFilter)
     )
     setFilteredPartners(filtered)
-  }, [searchTerm, partners, courseFilter, collegeFilter, smokerFilter, drinkerFilter, lookingForFilter,religionFilter])
+  }, [searchTerm, partners, courseFilter, collegeFilter, smokerFilter, drinkerFilter, lookingForFilter, hobbyFilter])
 
   const uniqueCourses = Array.from(new Set(partners.map((p) => p.course)))
   const uniqueColleges = Array.from(new Set(partners.map((p) => p.college)))
+  const uniqueHobbies = Array.from(new Set(partners.map((p) => p.hobby)))
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -61,7 +62,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
               <SelectValue placeholder="Course" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Courses</SelectItem>
+              <SelectItem value="all">Courses</SelectItem>
               {uniqueCourses.map((course) => (
                 <SelectItem key={course} value={course}>
                   {course}
@@ -74,7 +75,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
               <SelectValue placeholder="College" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Colleges</SelectItem>
+              <SelectItem value="all">Colleges</SelectItem>
               {uniqueColleges.map((college) => (
                 <SelectItem key={college} value={college}>
                   {college}
@@ -113,13 +114,15 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
               <SelectItem value="friendship">Friendship</SelectItem>
             </SelectContent>
           </Select>
-          
-          <Select value={religionFilter} onValueChange={setreligionFilter}>
+          <Select value={hobbyFilter} onValueChange={setHobbyFilter}>
             <SelectTrigger>
-              <SelectValue placeholder="religion" />
+              <SelectValue placeholder="Hobby" />
             </SelectTrigger>
             <SelectContent>
-              {religions.map((religion)=> <SelectItem key={religion} value={religion}>{religion}</SelectItem>)}
+              <SelectItem value="all">All Hobbies</SelectItem>
+              {uniqueHobbies.map((hobby) => (
+                <SelectItem key={hobby} value={hobby}>{hobby}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
