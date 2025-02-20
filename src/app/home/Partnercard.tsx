@@ -230,8 +230,8 @@ export default function PartnerCard({
 
       {/* Dialogs */}
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-[425px] max-h-[90vh] flex flex-col">
+          <DialogHeader className="flex-none">
             <DialogTitle>
               {partner.name}, {partner.age}
             </DialogTitle>
@@ -240,42 +240,68 @@ export default function PartnerCard({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-3 gap-2">
-              {partner.photos.map((photo, index) => (
-                <img
-                  key={index}
-                  src={photo || "/placeholder.svg"}
-                  alt={`${partner.name}'s photo ${index + 1}`}
-                  className="w-full h-24 object-cover cursor-pointer rounded"
-                  onClick={() => setSelectedImage(photo)}
-                />
-              ))}
-            </div>
-            <div>
-              <h4 className="font-semibold mb-2">Description</h4>
-              <p>{partner.description}</p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-2">Interests</h4>
-              <div className="flex flex-wrap gap-2">
-                {partner.interests.map((interest, index) => (
-                  <Badge key={index} variant="secondary">
-                    {interest}
-                  </Badge>
+          <div className="flex-1 overflow-y-auto pr-2 ">
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-3 gap-2">
+                {partner.photos.map((photo, index) => (
+                  <Image
+                    key={index}
+                    src={photo || "/placeholder.svg"}
+                    alt={`${partner.name}'s photo ${index + 1}`}
+                    className="w-full h-24 object-cover cursor-pointer rounded"
+                    onClick={() => setSelectedImage(photo)}
+                    width={200}
+                    height={400}
+                  />
                 ))}
               </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-2">Diet</h4>
-              <p>{partner.diet}</p>
+
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold mb-2">Bio</h4>
+                  <p>{partner.bio}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Description</h4>
+                  <p>{partner.description}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Interests</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {partner.interests.map((interest, index) => (
+                      <Badge key={index} variant="secondary">
+                        {interest}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Communication Preference</h4>
+                  <Badge variant="secondary">{partner.communicationPreference}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Diet</h4>
+                  <Badge variant={"secondary"}>{partner.diet}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Smoker</h4>
+                  <Badge variant={"secondary"}>{partner.smoker}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Drinker</h4>
+                  <Badge variant={"secondary"}>{partner.drinker}</Badge>
+                </div>
+              </div>
             </div>
           </div>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
+
+          <div className="flex justify-end pt-4 border-t flex-none">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+          </div>
         </DialogContent>
       </Dialog>
 
