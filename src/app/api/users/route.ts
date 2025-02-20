@@ -8,7 +8,9 @@ export async function GET() {
         const session = await auth()
         const Useremail = session?.user?.email
         await dbConnect();
-        const users = await User.find({ email: { $ne: Useremail } });
+        const userdata = await User.findOne({ email: Useremail });
+        const userGender = userdata.gender;
+        const users = await User.find({ email: { $ne: Useremail } ,gender:{$ne:userGender}});
         return NextResponse.json({
             success: true,
             data: users,
@@ -26,21 +28,21 @@ export async function GET() {
 }
 export async function PUT(request: Request) {
     try {
-      const session = await auth()
-      const userEmail = session?.user?.email
-      await dbConnect()
-      const body = await request.json()
-      const updatedUser = await User.findOneAndUpdate({ email: userEmail }, body, { new: true, runValidators: true })
-      if (!updatedUser) {
-        return NextResponse.json({ error: "User not found" }, { status: 404 })
-      }
-      return NextResponse.json(updatedUser)
+        const session = await auth()
+        const userEmail = session?.user?.email
+        await dbConnect()
+        const body = await request.json()
+        const updatedUser = await User.findOneAndUpdate({ email: userEmail }, body, { new: true, runValidators: true })
+        if (!updatedUser) {
+            return NextResponse.json({ error: "User not found" }, { status: 404 })
+        }
+        return NextResponse.json(updatedUser)
     } catch (error) {
-      console.error("Error updating user:", error)
-      return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
+        console.error("Error updating user:", error)
+        return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
     }
-  }
-  
+}
+
 export async function POST(request: Request) {
     try {
         await dbConnect()
