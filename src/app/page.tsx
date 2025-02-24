@@ -14,10 +14,7 @@ export default function LandingPage() {
       <header className="p-4 flex justify-between items-center relative z-10">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
           <Link href="/" className="text-2xl font-bold text-white flex items-center">
-            <Heart className="mr-2 text-pink-500 animate-pulse" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-zinc-100 to-zinc-400">
-              Campus Connection
-            </span>
+            <img src="/main-logo.png" alt="logo" className="w-40" />
           </Link>
         </motion.div>
       </header>

@@ -55,8 +55,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-r bg-neutral-900">
       <header className="p-4 flex justify-between items-center">
         <Link href="/home" className="text-2xl font-bold text-white flex items-center">
-          <Heart className="mr-2 text-pink-500" />
-          Campus Connection
+          <img src="/main-logo-png" alt="logo" className='w-40' />
         </Link>
         <nav className="hidden md:flex space-x-4">
           <Button variant="ghost" className="text-white" onClick={()=>router.push("/updateprofile")}>
