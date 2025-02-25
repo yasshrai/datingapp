@@ -27,7 +27,6 @@ export async function fetchPartnerSingle(email: string): Promise<Partner | null>
     course: userDetails.course,
     college: userDetails.college,
     year: userDetails.year,
-    bio: userDetails.bio,
     description: userDetails.description,
     religion: userDetails.religion,
     diet: userDetails.diet,
@@ -35,7 +34,6 @@ export async function fetchPartnerSingle(email: string): Promise<Partner | null>
     smoker: userDetails.smoker,
     drinker: userDetails.drinker,
     communicationPreference: userDetails.communicationPreference,
-    interests: userDetails.interests,
     photos: userDetails.photos,
     hobby:userDetails.hobby,
     gender:userDetails.gender
@@ -57,7 +55,6 @@ export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] 
     course: user.course,
     college: user.college,
     year: user.year,
-    bio: user.bio,
     description: user.description,
     religion: user.religion,
     diet: user.diet,
@@ -65,7 +62,6 @@ export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] 
     smoker: user.smoker,
     drinker: user.drinker,
     communicationPreference: user.communicationPreference,
-    interests: user.interests,
     photos: user.photos,
     hobby:user.hobby,
     gender:user.gender

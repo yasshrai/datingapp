@@ -76,8 +76,6 @@ export default function PartnerCard({
         }
       case 1:
         return { name: partner.name, title: "Description", subtitle: partner.description }
-      case 2:
-        return { name: partner.name, title: "Interests", subtitle: partner.interests.join(", ") }
       default:
         return { title: "", subtitle: "" }
     }
@@ -171,7 +169,7 @@ export default function PartnerCard({
               <Button
                 onClick={handlePrev}
                 variant="outline"
-                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2"
+                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-1"
               >
                 <X className="w-6 h-6" />
               </Button>
@@ -207,10 +205,10 @@ export default function PartnerCard({
       </div>
 
       <div className="flex justify-self-center mt-6 gap-1">
-        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-40 outline outline-1" variant="outline">
+        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6  outline outline-1" variant="outline">
           {/* <PersonStandingIcon className="h-6 w-6" /> */}
           <Users className="h-6 w-6" />
-          <p>PEOPLE</p>
+          <p>People</p>
         </Button>
         <Button
           className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1"
@@ -220,12 +218,12 @@ export default function PartnerCard({
           <MessageCircle className="h-6 w-6" />
         </Button>
         <Button
-          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-40 outline outline-1"
+          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6  outline outline-1"
           variant="outline"
           onClick={() => setShowConfessionWindow(true)}
         >
           <Activity className="h-6 w-6" />
-          <p>CONFESSION</p>
+          <p>Confession</p>
         </Button>
       </div>
 
@@ -258,23 +256,10 @@ export default function PartnerCard({
               </div>
 
               <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold mb-2">Bio</h4>
-                  <p>{partner.bio}</p>
-                </div>
+
                 <div>
                   <h4 className="font-semibold mb-2">Description</h4>
                   <p>{partner.description}</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Interests</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {partner.interests.map((interest, index) => (
-                      <Badge key={index} variant="secondary">
-                        {interest}
-                      </Badge>
-                    ))}
-                  </div>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Communication Preference</h4>

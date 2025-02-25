@@ -15,6 +15,7 @@ import { Partner } from '@/types/partner'
 import { ResponseData } from "@/types/responseData"
 import { useRouter } from 'next/navigation'
 
+
 export default function HomePage() {
   const [partners, setPartners] = useState<Partner[]>([])
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0)

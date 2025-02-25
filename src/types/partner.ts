@@ -6,7 +6,6 @@ export interface Partner {
     course: string
     college: string
     year: number
-    bio: string
     description: string
     religion: string
     diet: 'vegetarian' | 'non-vegetarian'
@@ -14,7 +13,6 @@ export interface Partner {
     smoker: 'yes' | 'no'
     drinker: 'yes' | 'no'
     communicationPreference: 'calling' | 'messaging'
-    interests: string[]
     photos: string[]
     hobby:string
     gender:string
