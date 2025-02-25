@@ -17,6 +17,7 @@ async function checkProfileComplete(email: string): Promise<boolean> {
   }
 }
 
+
 export default async function ProtectedHomePage() {
   const session = await auth()
   if (!session || !session.user?.email) {
