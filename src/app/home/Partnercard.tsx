@@ -13,7 +13,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { useSwipeable } from "react-swipeable"
-import { MessageCircle, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight } from "lucide-react"
+import { MessageCircle, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
@@ -207,9 +207,10 @@ export default function PartnerCard({
       </div>
 
       <div className="flex justify-self-center mt-6 gap-1">
-        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32 outline outline-1" variant="outline">
-          <PersonStandingIcon className="h-6 w-6" />
-          <p>people</p>
+        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-40 outline outline-1" variant="outline">
+          {/* <PersonStandingIcon className="h-6 w-6" /> */}
+          <Users className="h-6 w-6" />
+          <p>PEOPLE</p>
         </Button>
         <Button
           className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1"
@@ -219,12 +220,12 @@ export default function PartnerCard({
           <MessageCircle className="h-6 w-6" />
         </Button>
         <Button
-          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-32 outline outline-1"
+          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-40 outline outline-1"
           variant="outline"
           onClick={() => setShowConfessionWindow(true)}
         >
           <Activity className="h-6 w-6" />
-          <p>confession</p>
+          <p>CONFESSION</p>
         </Button>
       </div>
 
