@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { AnimatePresence } from 'framer-motion'
 import { Heart, User, Menu, LogOut, Search, HeartIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import axios from 'axios'
 import { Partner } from '@/types/partner'
 import { ResponseData } from "@/types/responseData"
 import { useRouter } from 'next/navigation'
+
 
 export default function HomePage() {
   const [partners, setPartners] = useState<Partner[]>([])
@@ -55,7 +57,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-r bg-neutral-900">
       <header className="p-4 flex justify-between items-center">
         <Link href="/home" className="text-2xl font-bold text-white flex items-center">
-          <img src="/main-logo-png" alt="logo" className='w-40' />
+          <Image src={"/main-logo.png"} alt="logo" width={"100"} height={100} className='w-40'/>
         </Link>
         <nav className="hidden md:flex space-x-4">
           <Button variant="ghost" className="text-white" onClick={()=>router.push("/updateprofile")}>

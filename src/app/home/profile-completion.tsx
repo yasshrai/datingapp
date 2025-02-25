@@ -26,10 +26,6 @@ const profileSchema = z.object({
   email: z.string().email(),
   year: z.string().min(1, { message: "Year is required" }),
   religion: z.string().min(2, { message: "Religion is required" }),
-  bio: z
-    .string()
-    .min(4, { message: "Bio must be at least 4 characters." })
-    .max(20, { message: "Bio must be less than 20 characters." }),
   description: z
     .string()
     .min(10, { message: "Description must be at least 10 characters." })
@@ -40,7 +36,6 @@ const profileSchema = z.object({
   drinker: z.enum(["yes", "no"]),
   communicationPreference: z.enum(["calling", "messaging"]),
   photos: z.array(z.string()),
-  interests: z.array(z.string()),
   gender: z.enum(["male", "female", "other"]),
   hobby: z.string()
     .min(2, { message: "Hobby is required." })
@@ -104,7 +99,6 @@ export default function ProfileCompletion() {
       college: "",
       year: "",
       religion: "",
-      bio: "",
       description: "",
       diet: "vegetarian",
       lookingFor: "long-term",
@@ -162,19 +156,7 @@ export default function ProfileCompletion() {
     }
     setDisabledButton(false)
   }
-  const addInterest = () => {
-    if (newInterest && !interests.includes(newInterest)) {
-      setInterests([...interests, newInterest])
-      form.setValue("interests", [...interests, newInterest])
-      setNewInterest("")
-    }
-  }
 
-  const removeInterest = (interest: string) => {
-    const updatedInterests = interests.filter((i) => i !== interest)
-    setInterests(updatedInterests)
-    form.setValue("interests", updatedInterests)
-  }
 
   return (
     <div className="container mx-auto p-4 max-w-2xl">
@@ -357,20 +339,6 @@ export default function ProfileCompletion() {
           />
           <FormField
             control={form.control}
-            name="bio"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Bio</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="A short bio about yourself" {...field} />
-                </FormControl>
-                <FormDescription>Write your Bio (max 20 characters).</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem>
@@ -489,38 +457,6 @@ export default function ProfileCompletion() {
               </FormItem>
             )}
           />
-          <FormItem>
-            <FormLabel>Interests</FormLabel>
-            <div className="flex space-x-2">
-              <Input
-                value={newInterest}
-                onChange={(e) => setNewInterest(e.target.value)}
-                placeholder="Add an interest"
-              />
-              <Button type="button" onClick={addInterest}>
-                Add
-              </Button>
-            </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {interests.map((interest, index) => (
-                <div
-                  key={index}
-                  className="bg-secondary text-secondary-foreground px-2 py-1 rounded-md flex items-center"
-                >
-                  {interest}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="ml-2 h-auto p-0 text-secondary-foreground"
-                    onClick={() => removeInterest(interest)}
-                  >
-                    ×
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </FormItem>
           <FormField
             control={form.control}
             name="communicationPreference"

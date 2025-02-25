@@ -400,19 +400,6 @@ export default function UpdateProfile() {
           />
           <FormField
             control={form.control}
-            name="bio"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Bio</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Your bio" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem>
@@ -580,38 +567,6 @@ export default function UpdateProfile() {
               </FormItem>
             )}
           />
-          <FormItem>
-            <FormLabel>Interests</FormLabel>
-            <div className="flex space-x-2">
-              <Input
-                value={newInterest}
-                onChange={(e) => setNewInterest(e.target.value)}
-                placeholder="Add an interest"
-              />
-              <Button type="button" onClick={addInterest}>
-                Add
-              </Button>
-            </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {interests.map((interest, index) => (
-                <div
-                  key={index}
-                  className="bg-secondary text-secondary-foreground px-2 py-1 rounded-md flex items-center"
-                >
-                  {interest}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="ml-2 h-auto p-0 text-secondary-foreground"
-                    onClick={() => removeInterest(interest)}
-                  >
-                    ×
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </FormItem>
           <FormField
             control={form.control}
             name="photos"

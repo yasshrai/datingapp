@@ -38,11 +38,15 @@ export default function LandingPage() {
           >
             <TypeAnimation
               sequence={[
-                "Love is just a click away",
+                "Find new friends 🤝😊 ",
                 2000,
-                "Discover your soulmate",
+                "Find your date ❤️",
                 2000,
-                "Start your romantic journey",
+                "Your date is just a click away 💘",
+                2000,
+                "Discover new connections ✨",
+                2000,
+                "Explore your campus 🏫",
                 2000,
               ]}
               wrapper="span"

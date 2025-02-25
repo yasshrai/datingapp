@@ -76,8 +76,6 @@ export default function PartnerCard({
         }
       case 1:
         return { name: partner.name, title: "Description", subtitle: partner.description }
-      case 2:
-        return { name: partner.name, title: "Interests", subtitle: partner.interests.join(", ") }
       default:
         return { title: "", subtitle: "" }
     }
@@ -258,23 +256,10 @@ export default function PartnerCard({
               </div>
 
               <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold mb-2">Bio</h4>
-                  <p>{partner.bio}</p>
-                </div>
+
                 <div>
                   <h4 className="font-semibold mb-2">Description</h4>
                   <p>{partner.description}</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Interests</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {partner.interests.map((interest, index) => (
-                      <Badge key={index} variant="secondary">
-                        {interest}
-                      </Badge>
-                    ))}
-                  </div>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Communication Preference</h4>
