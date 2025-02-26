@@ -20,6 +20,7 @@ export async function fetchPartnerSingle(email: string): Promise<Partner | null>
 
   if (!userDetails) return null
   return {
+    id: userDetails._id?.toString(),
     name: userDetails.name,
     email: userDetails.email,
     age: userDetails.age,
@@ -36,8 +37,8 @@ export async function fetchPartnerSingle(email: string): Promise<Partner | null>
     communicationPreference: userDetails.communicationPreference,
     interests: userDetails.interests,
     photos: userDetails.photos,
-    hobby: userDetails.hobby,
-    gender: userDetails.gender
+    hobby:userDetails.hobby,
+    gender:userDetails.gender
   }
 }
 export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] | null> {
@@ -47,7 +48,9 @@ export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] 
   const userDetails = await User.find({ email: { $in: decodedEmails } });
 
   if (!userDetails || userDetails.length === 0) return null;
+
   return userDetails.map((user) => ({
+    id: user._id?.toString(),
     name: user.name,
     email: user.email,
     age: user.age,
@@ -64,7 +67,7 @@ export async function fetchPartnerMultiple(emails: string[]): Promise<Partner[] 
     communicationPreference: user.communicationPreference,
     interests: user.interests,
     photos: user.photos,
-    hobby: user.hobby,
-    gender: user.gender
+    hobby:user.hobby,
+    gender:user.gender
   }));
 }
