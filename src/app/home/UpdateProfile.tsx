@@ -14,7 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/hooks/use-toast"
 import { UploadButton } from "@/utils/uploadthing"
 import { useSession } from "next-auth/react"
-import { fetchPartner } from "@/app/actions/fetchPartner"
+import { fetchPartnerSingle } from "@/app/actions/fetchPartner"
 
 const profileSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -25,7 +25,7 @@ const profileSchema = z.object({
   course: z.string().min(2, { message: "Course is required." }),
   college: z.string().min(2, { message: "College is required." }),
   email: z.string().email(),
-  gender: z.enum(["male", "female", "other"]),
+  gender: z.string(),
   hobby: z.string()
     .min(2, { message: "Hobby is required." })
     .max(15, { message: "Hobby must be at most 15 characters." })
@@ -113,25 +113,28 @@ export default function UpdateProfile() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (status === "loading") return
+      if (status === "loading") return;
+
       if (!session?.user?.email) {
         toast({
           title: "Error",
           description: "User email not found. Please sign in.",
           variant: "destructive",
-        })
-        return
+        });
+        return;
       }
 
       try {
-        const userData = await fetchPartner(encodeURIComponent(session.user.email))
-        if (userData && userData.length > 0) {
-          const user = userData[0]
+        const userData = await fetchPartnerSingle(encodeURIComponent(session.user.email));
+
+        if (userData) {
+          const user = userData;
+
           form.reset({
             name: user.name || "",
             age: user.age || 18,
             email: user.email || "",
-            gender: user.gender || "male",
+            gender: user.gender || undefined,
             hobby: user.hobby || "",
             course: user.course || "",
             college: user.college || "",
@@ -146,28 +149,29 @@ export default function UpdateProfile() {
             communicationPreference: user.communicationPreference || "messaging",
             photos: user.photos || [],
             interests: user.interests || [],
-          })
-          setPhotosUrl(user.photos || [])
-          setInterests(user.interests || [])
+          });
+          setPhotosUrl(user.photos || []);
+          setInterests(user.interests || []);
         } else {
           toast({
             title: "Error",
             description: "User data not found.",
             variant: "destructive",
-          })
+          });
         }
       } catch (error) {
-        console.error("Error fetching user data:", error)
+        console.error("Error fetching user data:", error);
         toast({
           title: "Error",
           description: "Failed to load user data. Please try again.",
           variant: "destructive",
-        })
+        });
       }
-    }
+    };
 
-    fetchUserData()
-  }, [session, status, form])
+    fetchUserData();
+  }, [session, status, form]);
+
 
   const addItem = (newUrl: string) => {
     if (newPhotosUrl.length + photosUrl.length < 3 && newUrl) {
@@ -184,7 +188,7 @@ export default function UpdateProfile() {
   async function onSubmit(values: z.infer<typeof profileSchema>) {
     setDisabledButton(true)
     try {
-      // Use newPhotosUrl if it's not empty, otherwise use the existing photosUrl
+      console.log(values)
       values.photos = newPhotosUrl.length > 0 ? newPhotosUrl : photosUrl
       values.interests = interests
       const response = await fetch("/api/users", {
@@ -279,7 +283,7 @@ export default function UpdateProfile() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Gender</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select value={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your gender" />
