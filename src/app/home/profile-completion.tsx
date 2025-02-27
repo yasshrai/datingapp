@@ -572,12 +572,27 @@ export default function ProfileCompletion() {
                 </FormControl>
                 <div className="grid grid-cols-3 gap-2 mt-4">
                   {photosurl.map((url, index) => (
-                    <img
-                      key={index}
-                      src={url || "/placeholder.svg"}
-                      alt={`Uploaded photo ${index + 1}`}
-                      className="w-full h-32 object-cover rounded"
-                    />
+                    <div key={index} className="relative">
+                      <img
+                        key={index}
+                        src={url || "/placeholder.svg"}
+                        alt={`Uploaded photo ${index + 1}`}
+                        className="w-full h-32 object-cover rounded"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-1 right-1"
+                        onClick={() => {
+                          const updatedPhotos = photosurl.filter((_, i) => i !== index)
+                          setPhotosUrl1(updatedPhotos)
+                          form.setValue("photos", updatedPhotos)
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   ))}
                 </div>
                 <FormDescription>Please upload 3 photos of yourself.</FormDescription>
