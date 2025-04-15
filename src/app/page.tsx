@@ -73,7 +73,7 @@ export default function LandingPage() {
           transition={{ duration: 0.5, delay: 2 }}
           className="text-sm"
         >
-          © 2023 Campus Connection. All rights reserved.
+          © 2025 Campus Connection. All rights reserved.
         </motion.p>
       </footer>
 
