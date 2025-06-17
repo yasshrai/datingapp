@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 overflow-hidden relative">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-black via-zinc-950 to-black overflow-hidden relative">
       <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-30"></div>
 
       <header className="p-4 flex justify-between items-center relative z-10">
@@ -25,7 +25,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-4xl md:text-6xl font-bold text-zinc-100 mb-6 relative"
+            className="text-4xl md:text-6xl font-bold text-white mb-6 relative"
           >
             Find Your Perfect Match
             <Sparkles className="absolute -top-6 -right-6 text-zinc-400 animate-spin-slow" size={32} />
@@ -34,7 +34,7 @@ export default function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 1 }}
-            className="text-xl md:text-2xl text-zinc-400 mb-8"
+            className="text-xl md:text-2xl text-zinc-200 mb-8"
           >
             <TypeAnimation
               sequence={[
@@ -58,7 +58,7 @@ export default function LandingPage() {
             <Button
               asChild
               size="lg"
-              className="bg-gradient-to-r from-zinc-800 to-zinc-700 hover:from-zinc-700 hover:to-zinc-600 text-zinc-100 font-bold py-3 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-105 border border-zinc-600"
+              className="bg-gradient-to-r from-zinc-700 to-zinc-600 hover:from-zinc-600 hover:to-zinc-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-105 border border-zinc-500"
             >
               <Link href="/login">Get Started</Link>
             </Button>
@@ -77,7 +77,8 @@ export default function LandingPage() {
         </motion.p>
       </footer>
 
-      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-zinc-950 to-transparent opacity-50"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/50 to-transparent opacity-90"></div>
+      <div className="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-black to-transparent"></div>
     </div>
   )
 }
