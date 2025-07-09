@@ -38,8 +38,8 @@ export default function ChatWindow({ partner }: { partner: Partner }) {
   };
 
   return (
-    <div className="w-full flex flex-col min-h-[70vh] max-h-[70vh] md:max-h-[50vh] rounded-lg shadow-lg">
-      <div className="w-full flex flex-row gap-3 p-4 border-b border-zinc-800">
+    <div className="w-full flex flex-col min-h-[70vh] max-h-[70vh] md:max-h-[50vh] rounded-lg shadow-lg bg-zinc-950">
+      <div className="w-full flex flex-row gap-3 p-4 border-b border-zinc-800 ">
         <img src={partner.photos[0]} className="size-10 rounded-xl" alt={partner.name} />
         <h2 className="text-xl font-semibold text-zinc-100">{partner.name}</h2>
       </div>
@@ -51,7 +51,7 @@ export default function ChatWindow({ partner }: { partner: Partner }) {
           >
             <div
               className={`chat-bubble  z-3 rounded-lg ${
-                message.sender === session?.user?.email ? "bg-black text-zinc-100" : "bg-neutral-200 text-black"
+                message.sender === session?.user?.email ? "bg-stone-950 text-zinc-100" : "bg-neutral-300 text-black"
               }`}
             >
               <p className="text-sm font-semibold mb-1 text-zinc-400">

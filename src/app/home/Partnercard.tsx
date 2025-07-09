@@ -13,7 +13,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { useSwipeable } from "react-swipeable"
-import { MessageCircle, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight, Users } from "lucide-react"
+import { MessageCircle, PersonStandingIcon, X, Activity, ChevronLeft, ChevronRight, Users, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Partner } from "@/types/partner"
 import { likePartner } from "@/app/actions/likeuser"
@@ -134,7 +134,58 @@ export default function PartnerCard({
               />
             </div>
 
-            <div className="absolute top-4 left-4 right-4 flex justify-between">
+            {/* 3 Action Buttons - top center over image */}
+            {/* 3 Action Buttons - bottom center over image */}
+            <div className="absolute bottom-1 inset-x-0 flex justify-center z-20">
+              <div className="flex items-center justify-center bg-black/20 backdrop-blur-md rounded-full px-2 py-1 shadow-lg gap-2">
+
+                <Button
+                  onClick={handlePrev}
+                  variant="outline"
+                  className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full p-0 flex items-center justify-center"
+                >
+                  <X className="w-6 h-6 text-white" />
+                </Button>
+                <Button
+                  className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full transition-colors p-0 flex items-center justify-center"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowChatWindow(true)
+                  }}
+                >
+                  <Send className="h-6 w-6 text-white" />
+                  <span className="sr-only">Chat with {partner.name}</span>
+                </Button>
+                <Button
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    try {
+                      await likePartner(partner.email)
+                      toast({
+                        className: "bg-green-700",
+                        description: "You liked " + partner.name,
+                      })
+                    } catch (error) {
+                      toast({
+                        className: "bg-green-700",
+                        description: "You already liked " + partner.name,
+                      })
+                    } finally {
+                      handleNext()
+                    }
+                  }}
+                  variant="outline"
+                  className="bg-red-600 hover:bg-red-700 size-12 rounded-full p-0 flex items-center justify-center"
+                >
+                  <i className="ri-poker-hearts-fill text-lg text-white"></i>
+                </Button>
+              </div>
+            </div>
+
+
+            {/* Left-right navigation arrows */}
+            <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
               <Button
                 variant="ghost"
                 size="icon"
@@ -159,75 +210,47 @@ export default function PartnerCard({
               </Button>
             </div>
 
+            {/* Bottom gradient overlay with user details */}
             <div className="absolute bottom-0 left-0 right-0 p-4 pb-16 bg-gradient-to-t from-black/70 to-transparent">
               <h2 className="text-lg font-bold text-white">{currentDetails.name}</h2>
               <h3 className="text-2xl font-semibold text-white pb-4">{currentDetails.title}</h3>
               <p className="text-sm text-white/80">{currentDetails.subtitle}</p>
             </div>
           </CardContent>
-
-          <div className="absolute -bottom-6 left-0 right-0 flex justify-center z-10">
-            <div className="flex justify-center bg-zinc-900 rounded-full px-2 py-1 shadow-lg">
-              <Button
-                onClick={handlePrev}
-                variant="outline"
-                className="bg-zinc-950 hover:bg-gray-900 size-12 rounded-full mr-2"
-              >
-                <X className="w-6 h-6" />
-              </Button>
-              <button onClick={() => setShowChatWindow(true)}>
-                <LoveMessageButton />
-              </button>
-              <Button
-                onClick={async (e) => {
-                  e.stopPropagation()
-                  try {
-                    await likePartner(partner.email)
-                    toast({
-                      className: "bg-green-700",
-                      description: "You liked " + partner.name,
-                    })
-                  } catch (error) {
-                    toast({
-                      className: "bg-green-700",
-                      description: "You already liked " + partner.name,
-                    })
-                  } finally {
-                    handleNext()
-                  }
-                }}
-                variant="outline"
-                className="bg-red-600 hover:bg-red-700 size-12 rounded-full"
-              >
-                <i className="ri-poker-hearts-fill text-lg"></i>
-              </Button>
-            </div>
-          </div>
         </Card>
+
       </div>
 
-      <div className="flex justify-self-center mt-6 gap-1">
-        <Button className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-40 outline outline-1" variant="outline">
-          {/* <PersonStandingIcon className="h-6 w-6" /> */}
-          <Users className="h-6 w-6" />
-          <p>PEOPLE</p>
-        </Button>
+      <div className="flex justify-center items-center mt-6 gap-4">
+        {/* PEOPLE */}
         <Button
-          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 outline outline-1"
+          className="bg-zinc-950 hover:bg-stone-900 text-white rounded-full px-5 py-3 w-36 shadow-md flex items-center justify-center gap-2 transition h-12"
+          variant="outline"
+        >
+          <Users className="h-5 w-5" />
+          <span className="text-sm font-medium">People</span>
+        </Button>
+
+        {/* CHAT */}
+        <Button
+          className="bg-zinc-950 hover:bg-stone-900 text-white rounded-full w-14 h-14 shadow-md flex items-center justify-center transition"
           variant="outline"
           onClick={() => setShowChatList(true)}
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-5 w-5" />
         </Button>
+
+        {/* CONFESSION */}
         <Button
-          className="bg-zinc-900 hover:bg-gray-900 rounded-full p-6 w-40 outline outline-1"
+          className="bg-zinc-950 hover:bg-stone-900 text-white rounded-full px-5 py-3 w-36 shadow-md flex items-center justify-center gap-2 transition h-12"
           variant="outline"
           onClick={() => setShowConfessionWindow(true)}
         >
-          <Activity className="h-6 w-6" />
-          <p>CONFESSION</p>
+          <Activity className="h-5 w-5" />
+          <span className="text-sm font-medium">Confession</span>
         </Button>
       </div>
+
 
       {/* Dialogs */}
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
@@ -322,8 +345,8 @@ export default function PartnerCard({
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showChatWindow} onOpenChange={setShowChatWindow}>
-        <DialogContent className="sm:max-w-[425px]">
+      <Dialog open={showChatWindow} onOpenChange={setShowChatWindow} >
+        <DialogContent className="sm:max-w-[425px] bg-zinc-950">
           <DialogHeader>
             <DialogTitle>Chat with {partner.name}</DialogTitle>
           </DialogHeader>
@@ -337,7 +360,7 @@ export default function PartnerCard({
       </Dialog>
 
       <Dialog open={showChatList} onOpenChange={setShowChatList}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-zinc-950">
           <DialogHeader>
             <DialogTitle>Chat History</DialogTitle>
           </DialogHeader>
@@ -351,7 +374,7 @@ export default function PartnerCard({
       </Dialog>
 
       <Dialog open={showConfessionWindow} onOpenChange={setShowConfessionWindow}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-zinc-950">
           <DialogHeader>
             <DialogTitle>Confession</DialogTitle>
             <DialogDescription>Share your anonymous confession with everyone.</DialogDescription>

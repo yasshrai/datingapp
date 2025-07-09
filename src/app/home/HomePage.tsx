@@ -53,13 +53,17 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r bg-neutral-900">
+    <div className="min-h-screen bg-gradient-to-r bg-neutral-950">
       <header className="p-4 flex justify-between items-center">
         <Link href="/home" className="text-2xl font-bold text-white flex items-center">
-        <Image src={"/main-logo.png"} alt="logo" width={"100"} height={100} className='w-40'/>
+          <h1 className="text-white text-4xl font-bold tracking-wide text-center py-4 flex items-center justify-center gap-2">
+            Campus Connection
+            <Heart className="text-red-500 w-8 h-8" />
+          </h1>
+
         </Link>
         <nav className="hidden md:flex space-x-4">
-          <Button variant="ghost" className="text-white" onClick={()=>router.push("/updateprofile")}>
+          <Button variant="ghost" className="text-white" onClick={() => router.push("/updateprofile")}>
             <User className="mr-2" /> Profile
           </Button>
           <Button onClick={() => signOut({ redirectTo: "/login" })}>
@@ -74,7 +78,7 @@ export default function HomePage() {
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
             <nav className="flex flex-col space-y-4">
-              <Button variant="ghost" onClick={()=>router.push("/updateprofile")}>
+              <Button variant="ghost" onClick={() => router.push("/updateprofile")}>
                 <User className="mr-2" /> Profile
               </Button>
               <Button onClick={() => signOut({ redirectTo: "/login" })}>
@@ -93,9 +97,9 @@ export default function HomePage() {
                 <Search className='text-white' fill='black' /><p className='text-sm font-bold'>SEARCH</p>
               </Button>
             </div>
-            <div className='w-28 h-8 flex items-center justify-center bg-pink-400 text-black text-sm rounded-xl'>
-              <Button variant="ghost" className='w-full' onClick={()=> router.push("/likes")}>
-              <i className="text-lg ri-poker-hearts-fill"></i><p className='text-sm font-bold '>Likes</p>
+            <div className='w-28 h-8 flex items-center justify-center  text-black text-sm rounded-xl'>
+              <Button variant="default" className='w-full h-full' onClick={() => router.push("/likes")}>
+                <i className="text-lg ri-poker-hearts-fill text-black"></i><p className='text-sm font-bold '>Likes</p>
               </Button>
             </div>
           </div>

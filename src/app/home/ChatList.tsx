@@ -78,7 +78,7 @@ const ChatList = () => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-zinc-950">
       <div className="relative">
         <Input
           type="text"
@@ -90,11 +90,11 @@ const ChatList = () => {
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
       </div>
       {isLoading ? (
-        <div className="flex justify-center items-center h-[70vh] md:h-[50vh]">
+        <div className="flex justify-center items-center h-[70vh] md:h-[50vh] bg-zinc-950">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
       ) : (
-        <ul className="space-y-4 overflow-auto min-h-[68vh] max-h-[68vh] md:max-h-[50vh] custom-scrollbar">
+        <ul className="space-y-4 overflow-auto min-h-[68vh] max-h-[68vh] md:max-h-[50vh] custom-scrollbar bg-zinc-950">
           {filteredChats.map((chat, index) => (
             <li
               key={index}
@@ -117,7 +117,7 @@ const ChatList = () => {
         </ul>
       )}
       <Dialog open={showChatWindow} onOpenChange={setShowChatWindow}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-zinc-950">
           <DialogHeader>
             <DialogTitle>Chat with {selectedPartner?.name || "Partner"}</DialogTitle>
           </DialogHeader>

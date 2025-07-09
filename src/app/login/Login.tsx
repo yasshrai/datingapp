@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react"
 
 const Login = () => {
   return (
-    <Card className="w-full max-w-md bg-gradient-to-br from-purple-950 to-indigo-950 border-0 shadow-xl">
+    <Card className="w-full max-w-md bg-zinc-950 border shadow-2xl shadow-zinc-800  ">
       <CardHeader className="space-y-1">
         <CardTitle className="text-3xl font-bold text-center text-white">
           <div className="relative inline-block">
@@ -23,7 +23,7 @@ const Login = () => {
           <Button
             variant="outline"
             onClick={() => signIn("google", { redirectTo: "/home" })}
-            className="bg-white text-purple-950 hover:bg-purple-100 transition-all duration-300 transform hover:scale-105 font-semibold py-3 rounded-full shadow-md"
+            className="bg-white text-purple-950 hover:bg-pink-500 transition-all duration-300 transform hover:scale-105 font-semibold py-3 rounded-full shadow-md"
           >
             Continue With Google
           </Button>

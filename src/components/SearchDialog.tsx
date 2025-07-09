@@ -46,7 +46,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-zinc-950">
         <DialogHeader>
           <DialogTitle>Search Partners</DialogTitle>
         </DialogHeader>
@@ -56,7 +56,7 @@ export function SearchDialog({ isOpen, onClose, partners, onSelectPartner }: Sea
           onChange={(e) => setSearchTerm(e.target.value)}
           className="mb-4"
         />
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-2 gap-4 mb-4 bg-zinc-950">
           <Select value={courseFilter} onValueChange={setCourseFilter}>
             <SelectTrigger>
               <SelectValue placeholder="Course" />
