@@ -8,7 +8,7 @@ export default function LikesPage() {
     const { likes, error, loading } = useLikes();
 
     if (loading) {
-        return <div className='min-h-screen bg-stone-950'> <div className="flex justify-center items-center h-[70vh] md:h-[50vh]">
+        return <div className='min-h-screen bg-zinc-950'> <div className="flex justify-center items-center h-[70vh] md:h-[50vh]">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
     </div></div>;;
     }
@@ -18,7 +18,7 @@ export default function LikesPage() {
     }
 
     return (
-        <div className="container mx-auto p-4 min-h-screen">
+        <div className="container mx-auto p-4 min-h-screen bg-zinc-950">
             <h1 className="text-2xl font-bold mb-4">Likes</h1>
             <LikedList likes={likes} />
         </div>

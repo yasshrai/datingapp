@@ -29,7 +29,7 @@ export default function LikedList({ likes }: LikedListProps) {
   }
 
   return (
-    <Card className="w-full max-w-md md:max-w-2xl mx-auto h-[90vh] md:h-[80vh]">
+    <Card className="w-full max-w-md md:max-w-2xl mx-auto h-[90vh] md:h-[80vh] bg-zinc-950">
       <CardHeader>
         <CardTitle>Likes</CardTitle>
       </CardHeader>
@@ -39,7 +39,7 @@ export default function LikedList({ likes }: LikedListProps) {
             {likes.map((like, index) => (
               <li key={index}>
                 <Card>
-                  <CardContent className="flex items-center space-x-4 p-4">
+                  <CardContent className="flex items-center space-x-4 p-4 bg-zinc-950">
                     <Avatar>
                       <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${like.liker}`} alt={like.liker} />
                       <AvatarFallback>{like.liker.slice(0, 2).toUpperCase()}</AvatarFallback>
