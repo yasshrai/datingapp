@@ -34,6 +34,9 @@ const TermsOfService = () => {
             <li>
               <span className="font-semibold">Email Security:</span> If you log in using your email, your Gmail account details are secure and handled by Google's authentication services. We do not store your password.
             </li>
+            <li>
+              <span className="font-semibold">File Handling with <a href="https://uploadthing.com/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">UploadThing</a>:</span> We use <a href="https://uploadthing.com/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">UploadThing</a> for handling file uploads. Please be aware that under their free tier, files are made publicly accessible and are not private. Therefore, you should not upload any sensitive images or files that you do not want to be publicly available.
+            </li>
           </ul>
         </section>
 
