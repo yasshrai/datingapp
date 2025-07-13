@@ -4,6 +4,7 @@ import { Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { signIn } from "next-auth/react"
+import Link from "next/link"
 
 const Login = () => {
   return (
@@ -31,13 +32,9 @@ const Login = () => {
         <div className="text-center">
           <span className="text-sm text-gray-400">By continuing, you agree to our</span>
           <br />
-          <a href="#" className="text-sm text-pink-400 hover:text-pink-300 transition-colors duration-200">
-            Terms of Service
-          </a>
-          <span className="text-sm text-gray-400"> and </span>
-          <a href="#" className="text-sm text-pink-400 hover:text-pink-300 transition-colors duration-200">
-            Privacy Policy
-          </a>
+          <Link href="/terms" className="text-sm text-pink-400 hover:text-pink-300 transition-colors duration-200">
+            Terms of Service and Privacy Policy
+          </Link>
         </div>
       </CardContent>
     </Card>

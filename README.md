@@ -33,8 +33,8 @@ Make sure you have [Node.js](https://nodejs.org/en/) and [pnpm](https://pnpm.io/
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-username/dating-app.git
-   cd dating-app
+   git clone https://github.com/yasshrai/datingapp.git
+   cd datingapp
    ```
 
 2. **Install dependencies:**
@@ -43,7 +43,7 @@ Make sure you have [Node.js](https://nodejs.org/en/) and [pnpm](https://pnpm.io/
    ```
 
 3. **Set up environment variables:**
-   Create a `.env.local` file in the root of your project and add the necessary environment variables. You can use `.env.example` as a template.
+   Create a `.env.local` file in the root of your project and add the necessary environment variables.
 
    ```env
    # Example environment variables
