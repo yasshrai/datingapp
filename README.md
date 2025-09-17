@@ -27,7 +27,7 @@ To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-Make sure you have [Node.js](https://nodejs.org/en/) and [pnpm](https://pnpm.io/) installed on your machine.
+Make sure you have [bun](https://bun.com/) installed on your machine.
 
 ### Installation
 
@@ -39,7 +39,7 @@ Make sure you have [Node.js](https://nodejs.org/en/) and [pnpm](https://pnpm.io/
 
 2. **Install dependencies:**
    ```sh
-   pnpm install
+   bun install
    ```
 
 3. **Set up environment variables:**
@@ -56,7 +56,7 @@ Make sure you have [Node.js](https://nodejs.org/en/) and [pnpm](https://pnpm.io/
 
 4. **Run the development server:**
    ```sh
-   pnpm dev
+   bun dev
    ```
 
    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -65,10 +65,8 @@ Make sure you have [Node.js](https://nodejs.org/en/) and [pnpm](https://pnpm.io/
 
 In the project directory, you can run:
 
-- `pnpm dev`: Runs the app in development mode.
-- `pnpm build`: Builds the app for production.
-- `pnpm start`: Starts a production server.
-- `pnpm lint`: Lints the code for errors and warnings.
+- `bun dev`: Runs the app in development mode.
+
 
 ## Deployment
 
